@@ -1,0 +1,96 @@
+*music-controls.txt* Control your favorite music players with ease.
+*MusicControls*
+
+License: MIT
+Author: Anton Van Assche <https://github.com/AntonVanAssche/>
+
+=============================================================================
+CONTENTS                                                   *MusicControls-TOC*
+
+    1. Commands.............|music-controls-commands|
+    2. Configuration........|music-controls-configuration|
+
+=============================================================================
+1. Commands                                            *MusicControlsCommands*
+
+MusicPlay {player}                                                *:MusicPlay*
+
+    This will start playing or pause currently playing track, depending on
+    the state currently playing player.
+
+    - {player}        Name of the player to use.
+
+MusicPause {player}                                              *:MusicPause*
+
+    This will pause the currently playing track.
+
+    - {player}        Name of the player to use.
+
+MusicCurrent {player}                                          *:MusicCurrent*
+
+    Display the current track.
+
+    - {player}        Name of the player to use.
+
+MusicNext {player} {amount}                                       *:MusicNext*
+
+    Skip to the next track.
+
+    - {player}        Name of the player to use.
+    - {amount}        Amount of tracks to skip
+
+MusicPrev {player} {amount}                                       *:MusicPrev*
+
+    Play the previous track.
+
+    - {player}        Name of the player to use.
+    - {amount}        Amount of tracks to go back.
+
+MusicForwards {player}                                        *:MusicForwards*
+
+   Fast forward the current track by 10 seconds.
+
+    - {player}        Name of the player to use.
+
+MusicBackwards {player}                                      *:MusicBackwards*
+
+    Rewind the current track by 10 seconds.
+
+    - {player}        Name of the player to use.
+
+MusicListPlayers                                           *:MusicListPlayers*
+
+    List out all the currently available players.
+
+=============================================================================
+2. Configuration                                  *MusicControlsConfiguration*
+
+    Music Controls doesn't really need any configuration, the only thing
+    that can be configured is the default player.
+
+Default player                                    *MusicControlsDefaultPlayer*
+
+    You can specify a default music player by adding the following code to
+    your `init.lua` file:
+
+>
+    _G.music_controls_default_player = 'spotify'
+<
+
+    Or your in case you are using a `init.vim` file:
+
+>
+    g.muic_controls_default_player = 'spotify'
+<
+
+    This will set Spotify as the default music player for Music Controls.
+    You can substitute `spotify` with the name of any other music player
+    you want to set as the default.
+
+    With a default player set, you can use Music Controls commands without
+    specifying a player each time.
+    For example, `:MusicPlay` will automatically use the default player
+    instead of requiring you to enter `:MusicPlay spotify`.
+
+=============================================================================
+vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
