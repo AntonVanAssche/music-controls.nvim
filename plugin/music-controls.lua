@@ -9,8 +9,6 @@ vim.api.nvim_create_user_command('MusicPause', function(opt) require('music-cont
 vim.api.nvim_create_user_command('MusicNext', function(opt) require('music-controls').next(opt.fargs) end, { nargs = '*' })
 vim.api.nvim_create_user_command('MusicPrev', function(opt) require('music-controls').prev(opt.fargs) end, { nargs = '*' })
 vim.api.nvim_create_user_command('MusicCurrent', function(opt) require('music-controls').current_song(opt.fargs) end, { nargs = '*' })
-vim.api.nvim_create_user_command('MusicForwards', function(opt) require('music-controls').forwards(opt.fargs) end, { nargs = '*' })
-vim.api.nvim_create_user_command('MusicBackwards', function(opt) require('music-controls').backwards(opt.fargs) end, { nargs = '*' })
 vim.api.nvim_create_user_command('MusicListPlayers', function() require('music-controls').list_players() end, { nargs = 0 })
 
 -- Set the plugin as loaded.

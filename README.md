@@ -62,8 +62,6 @@ Once the plugin is installed, you can use the following commands followed by the
 -   `:MusicNext` - Skip to the next track.
 -   `:MusicPrev` - Go back to the previous track.
 -   `:MusicCurrent` - Display the current track.
--   `:MusicForwards` - Fast forward the current track by 10 seconds.
--   `:MusicBackwards` - Rewind the current track by 10 seconds.
 -   `:MusicListPlayers` - List all players available to control.
 
 #### Examples
@@ -76,7 +74,6 @@ Here are some examples of how you can use the commands mentioned above:
 :MusicPrev spotify 4        # Skip the 4 next tracks.
 :MusicPause spotfy          # Pause the current track.
 :MusicListPlayers           # List out all players available.
-:MusicForwards spotify      # Fast forward the current track by 10 seconds.
 ```
 
 #### Specifying a Default Player

@@ -205,50 +205,6 @@ M.pause = function(player)
     M.current_song(player)
 end
 
--- Go 10 seconds forward.
-M.forwards = function(player)
-    -- Check whether 'playerctl' is installed.
-    if not check_playerctl_installed() then
-        return
-    end
-
-    -- Check if a player was passed as an argument.
-    -- If not, use the default player when specified in the user's config.
-    -- When no default player is specified, notify the user that no player was specified.
-    if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
-        else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
-            return
-        end
-    end
-
-    exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' position 10+')
-end
-
--- Go 10 seconds backwards.
-M.backwards = function(player)
-    -- Check whether 'playerctl' is installed.
-    if not check_playerctl_installed() then
-        return
-    end
-
-    -- Check if a player was passed as an argument.
-    -- If not, use the default player when specified in the user's config.
-    -- When no default player is specified, notify the user that no player was specified.
-    if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
-        else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
-            return
-        end
-    end
-
-    exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' position 10-')
-end
-
 M.list_players = function()
     -- Check whether 'playerctl' is installed.
     if not check_playerctl_installed() then

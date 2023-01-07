@@ -46,18 +46,6 @@ MusicPrev {player} {amount}                                       *:MusicPrev*
     - {player}        Name of the player to use.
     - {amount}        Amount of tracks to go back.
 
-MusicForwards {player}                                        *:MusicForwards*
-
-   Fast forward the current track by 10 seconds.
-
-    - {player}        Name of the player to use.
-
-MusicBackwards {player}                                      *:MusicBackwards*
-
-    Rewind the current track by 10 seconds.
-
-    - {player}        Name of the player to use.
-
 MusicListPlayers                                           *:MusicListPlayers*
 
     List out all the currently available players.
