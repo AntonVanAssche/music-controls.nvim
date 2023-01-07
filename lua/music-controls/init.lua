@@ -205,6 +205,32 @@ M.pause = function(player)
     M.current_song(player)
 end
 
+-- Toggle shuffle.
+M.shuffle = function(player)
+    -- Check whether 'playerctl' is installed.
+    if not check_playerctl_installed() then
+        return
+    end
+
+    -- Check if a player was passed as an argument.
+    -- If not, use the default player when specified in the user's config.
+    -- When no default player is specified, notify the user that no player was specified.
+    if not player[1] then
+        if _G.music_controls_default_player then
+            player[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    end
+
+    exec_command('playerctl -p  '.. remove_newline(player[1]) .. ' shuffle toggle')
+    sleep(0.25)
+    local result = exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' shuffle')
+
+    vim.notify('Shuffle: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
+end
+
 M.list_players = function()
     -- Check whether 'playerctl' is installed.
     if not check_playerctl_installed() then

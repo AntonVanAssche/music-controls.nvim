@@ -46,6 +46,12 @@ MusicPrev {player} {amount}                                       *:MusicPrev*
     - {player}        Name of the player to use.
     - {amount}        Amount of tracks to go back.
 
+MusicShuffle {player}                                           *:MusicShuffle*
+
+   Toggle shuffle mode.
+
+    - {player}        Name of the player to use.
+
 MusicListPlayers                                           *:MusicListPlayers*
 
     List out all the currently available players.
