@@ -85,8 +85,10 @@ M.current_song = function(player)
     end
 
     sleep(0.50)
-    local result = exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' metadata --format "{{ title }} - {{ artist }}"')
-    vim.notify(remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
+    local result = exec_command('playerctl -p ' .. player[1] .. ' metadata --format "{{ title }} - {{ artist }}"')
+    local status = status(player)
+
+    vim.notify(status .. '\n' .. remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
 end
 
 -- Go to the next song or skip the given amount of songs.
