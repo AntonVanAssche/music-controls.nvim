@@ -101,14 +101,23 @@ M.next = function(args)
     -- Check if a player was passed as an argument.
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
-    if _G.music_controls_default_player and not (args[1] == "" or args[1]:find("%D"))then
-        -- Move the amount of songs to the second argument.
-        -- Then set the first argument to the default player.
+    if not args then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    elseif not args[1] then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    elseif args[1] == string.match(args[1], '[1-9]') then
         args[2] = args[1]
         args[1] = _G.music_controls_default_player
-    elseif args[1] == nil then
-        vim.notify('No player specified', 'error', { title = 'Music Controls' })
-        return
     end
 
     -- When no amount of songs was specified, skip to the next song.
@@ -133,14 +142,23 @@ M.prev = function(args)
     -- Check if a player was passed as an argument.
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
-    if _G.music_controls_default_player and not (args[1] == "" or args[1]:find("%D"))then
-        -- Move the amount of songs to the second argument.
-        -- Then set the first argument to the default player.
+    if not args then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    elseif not args[1] then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    elseif args[1] == string.match(args[1], '[1-9]') then
         args[2] = args[1]
         args[1] = _G.music_controls_default_player
-    elseif args[1] == nil then
-        vim.notify('No player specified', 'error', { title = 'Music Controls' })
-        return
     end
 
     -- When no amount of songs is specified, go back one song.
