@@ -62,6 +62,8 @@ local function status(player)
         icon = '  '
     elseif result == 'Paused' then
         icon = '  '
+    elseif result == 'Stopped' then
+        icon = '  '
     end
 
     return icon .. result
