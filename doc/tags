@@ -1,0 +1,13 @@
+:MusicCurrent	music-controls.txt	/*:MusicCurrent*
+:MusicListPlayers	music-controls.txt	/*:MusicListPlayers*
+:MusicNext	music-controls.txt	/*:MusicNext*
+:MusicPause	music-controls.txt	/*:MusicPause*
+:MusicPlay	music-controls.txt	/*:MusicPlay*
+:MusicPrev	music-controls.txt	/*:MusicPrev*
+:MusicShuffle	music-controls.txt	/*:MusicShuffle*
+MusicControls	music-controls.txt	/*MusicControls*
+MusicControls-TOC	music-controls.txt	/*MusicControls-TOC*
+MusicControlsCommands	music-controls.txt	/*MusicControlsCommands*
+MusicControlsConfiguration	music-controls.txt	/*MusicControlsConfiguration*
+MusicControlsDefaultPlayer	music-controls.txt	/*MusicControlsDefaultPlayer*
+music-controls.txt	music-controls.txt	/*music-controls.txt*

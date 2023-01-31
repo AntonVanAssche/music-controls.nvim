@@ -253,6 +253,60 @@ M.shuffle = function(player)
     vim.notify('Shuffle: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
 end
 
+-- Toggle different repeat modes.
+M.loop = function (args)
+    -- Check whether 'playerctl' is installed.
+    if not check_playerctl_installed() then
+        return
+    end
+
+    -- Check if a player was passed as an argument.
+    -- If not, use the default player when specified in the user's config.
+    -- When no default player is specified, notify the user that no player was specified.
+    if not args then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    elseif not args[1] then
+        if _G.music_controls_default_player then
+            args[1] = _G.music_controls_default_player
+        else
+            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            return
+        end
+    else
+        for _, mode in ipairs({'none', 'playlist', 'track'}) do
+            if string.lower(args[1]) == mode then
+                args[2] = args[1]
+                args[1] = _G.music_controls_default_player
+            end
+        end
+    end
+
+    -- When no repeat mode is specified, toggle between 'None' and 'Track'.
+    -- In case a repeat mode is specified, set the repeat mode to that mode.
+    if args[2] == nil then
+        local result = exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop')
+
+        if remove_newline(result) == 'None' then
+            exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop track')
+        else
+            exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop none')
+        end
+    else
+        exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop ' .. args[2])
+    end
+
+    sleep(0.25)
+    local result = exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop')
+
+    -- Notify the user about the repeat mode.
+    vim.notify('Repeat mode: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(args[1])) })
+end
+
 M.list_players = function()
     -- Check whether 'playerctl' is installed.
     if not check_playerctl_installed() then

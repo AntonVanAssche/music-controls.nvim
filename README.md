@@ -63,6 +63,7 @@ Once the plugin is installed, you can use the following commands followed by the
 -   `:MusicPrev` - Go back to the previous track.
 -   `:MusicCurrent` - Display the current track.
 -   `:MusicShuffle` - Toggle shuffle mode.
+-   `:MusicLoop` - Toggle repeat mode, or set a specify mode.
 -   `:MusicListPlayers` - List all players available to control.
 
 #### Examples
@@ -75,6 +76,8 @@ Here are some examples of how you can use the commands mentioned above:
 :MusicPrev spotify 4        # Skip the 4 next tracks.
 :MusicPause spotfy          # Pause the current track.
 :MusicListPlayers           # List out all players available.
+:MusicLoop Track            # Keep repeating the current track.
+:MusicLoop                  # Set the repeate mode to None or Track, depending on the current mode.
 :MusicShuffle spotify       # Toggle shuffle mode.
 ```
 
@@ -106,8 +109,8 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 Features I plan on adding in the foreseeable future:
 
--   [ ] Add loop functionality.
-    -   'on', 'track' and 'playlist'
+-   [X] Add loop functionality.
+    -   'None', 'Track' and 'Playlist'
 -   [X] Add shuffle functionality.
     -   'toggle'
 -   [ ] To be continued...
