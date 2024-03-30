@@ -71,10 +71,10 @@ Default player                                    *MusicControlsDefaultPlayer*
     _G.music_controls_default_player = 'spotify'
 <
 
-    Or your in case you are using a `init.vim` file:
+    Or in case you are using a `init.vim` file:
 
 >
-    g.muic_controls_default_player = 'spotify'
+    let g:muic_controls_default_player = 'spotify'
 <
 
     This will set Spotify as the default music player for Music Controls.
