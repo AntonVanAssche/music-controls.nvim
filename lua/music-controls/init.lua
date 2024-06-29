@@ -18,7 +18,7 @@ end
 -- If not, it will display a notification.
 local function check_playerctl_installed()
     if vim.fn.executable('playerctl') == 0 then
-        notify('playerctl is not installed', 'error')
+        vim.notify('playerctl is not installed', 'error')
         return false
     end
 
