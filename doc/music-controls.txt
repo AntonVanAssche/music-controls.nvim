@@ -64,19 +64,20 @@ MusicListPlayers                                           *:MusicListPlayers*
 
 Default player                                    *MusicControlsDefaultPlayer*
 
-    You can specify a default music player by adding the following code to
-    your `init.lua` file:
+    A default player can be configured by calling the `setup` function and
+    passing the name of the player to the `default_player` key.
 
+    For example, lazy.nvim users can add the following code to their
+    `init.lua` file:
 >
-    _G.music_controls_default_player = 'spotify'
+    {
+      'AntonVanAssche/music-controls.nvim',
+      dependencies = { 'rcarriga/nvim-notify' },
+      opts = {
+        default_player = 'spotify'
+      }
+    }
 <
-
-    Or in case you are using a `init.vim` file:
-
->
-    let g:muic_controls_default_player = 'spotify'
-<
-
     This will set Spotify as the default music player for Music Controls.
     You can substitute `spotify` with the name of any other music player
     you want to set as the default.
