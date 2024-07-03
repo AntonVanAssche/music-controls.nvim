@@ -19,39 +19,16 @@ I hope that others who have similar needs will find Music Controls useful as wel
 
 ### Dependencies
 
-Music Controls requires `playerctl` and of corse Spotify to be installed in order to work properly.
+Music Controls requires `playerctl`  to be installed in order to work properly.
 
-### Using [Packer](https://github.com/wbthomason/packer.nvim)
-
-1. Add this to your Neovim config:
+### Using [lazy.nvim](https://github.com/folke/lazy.nvim)
 
 ```lua
-use {
-    'AntonVanAssche/music-controls.nvim',
-    requires = {
-        'rcarriga/nvim-notify'
-    }
+{
+  'AntonVanAssche/music-controls.nvim',
+  dependencies = { 'rcarriga/nvim-notify' }
 }
-
 ```
-
-2. Run `:PackerSync` to install the plugin on your machine.
-
-### Using [Vim-Plug](https://github.com/junegunn/vim-plug)
-
-1. Add the following to your Neovim config:
-
-```vim
-Plug 'rcarriga/nvim-notify'
-Plug 'AntonVanAssche/music-controls.nvim'
-```
-
-2. Run `:PlugInstall` to install the plugin on your machine.
-
-### Manually
-
-1. Clone this repository into your Neovim ~/.config/nvim/pack/plugins/start/directory.
-2. Clone the `nvim-notify` repository into you Neovim ~/.config/nvim/pack/plugins/start/directory.
 
 ### Usage
 
@@ -86,7 +63,13 @@ Here are some examples of how you can use the commands mentioned above:
 You can specify a default music player by adding the following code to your `init.lua` file:
 
 ```lua
-_G.music_controls_default_player = 'spotify'
+{
+  'AntonVanAssche/music-controls.nvim',
+  dependencies = { 'rcarriga/nvim-notify' },
+  opts = {
+    default_player = 'spotify'
+  }
+}
 ```
 
 This will set Spotify as the default music player for Music Controls. You can substitute `spotify` with the name of any other music player you want to set as the default.
@@ -104,13 +87,3 @@ Music Controls is licensed under the MIT License. See the [LICENSE.md](./LICENSE
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any bugs or feature requests.
-
-## TODO
-
-Features I plan on adding in the foreseeable future:
-
--   [X] Add loop functionality.
-    -   'None', 'Track' and 'Playlist'
--   [X] Add shuffle functionality.
-    -   'toggle'
--   [ ] To be continued...

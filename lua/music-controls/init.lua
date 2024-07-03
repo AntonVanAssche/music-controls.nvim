@@ -3,6 +3,9 @@
 vim.notify = require('notify')
 
 local M = {}
+local settings = {
+    default_player = nil,
+}
 
 -- Remove the new line character from the end of the string.
 local function remove_newline(str)
@@ -15,7 +18,7 @@ end
 -- If not, it will display a notification.
 local function check_playerctl_installed()
     if vim.fn.executable('playerctl') == 0 then
-        notify('playerctl is not installed', 'error')
+        vim.notify('playerctl is not installed', 'error')
         return false
     end
 
@@ -78,8 +81,8 @@ M.current_song = function(player)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
+        if settings.default_player then
+            player[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
@@ -104,22 +107,22 @@ M.next = function(args)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not args then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif args[1] == string.match(args[1], '[1-9]') then
         args[2] = args[1]
-        args[1] = _G.music_controls_default_player
+        args[1] = settings.default_player
     end
 
     -- When no amount of songs was specified, skip to the next song.
@@ -145,22 +148,22 @@ M.prev = function(args)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not args then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif args[1] == string.match(args[1], '[1-9]') then
         args[2] = args[1]
-        args[1] = _G.music_controls_default_player
+        args[1] = settings.default_player
     end
 
     -- When no amount of songs is specified, go back one song.
@@ -187,8 +190,8 @@ M.play = function(player)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
+        if settings.default_player then
+            player[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
@@ -215,8 +218,8 @@ M.pause = function(player)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
+        if settings.default_player then
+            player[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
@@ -238,8 +241,8 @@ M.shuffle = function(player)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not player[1] then
-        if _G.music_controls_default_player then
-            player[1] = _G.music_controls_default_player
+        if settings.default_player then
+            player[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
@@ -264,15 +267,15 @@ M.loop = function (args)
     -- If not, use the default player when specified in the user's config.
     -- When no default player is specified, notify the user that no player was specified.
     if not args then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
-        if _G.music_controls_default_player then
-            args[1] = _G.music_controls_default_player
+        if settings.default_player then
+            args[1] = settings.default_player
         else
             vim.notify('No player specified', 'error', { title = 'Music Controls' })
             return
@@ -281,7 +284,7 @@ M.loop = function (args)
         for _, mode in ipairs({'none', 'playlist', 'track'}) do
             if string.lower(args[1]) == mode then
                 args[2] = args[1]
-                args[1] = _G.music_controls_default_player
+                args[1] = settings.default_player
             end
         end
     end
@@ -305,6 +308,14 @@ M.loop = function (args)
 
     -- Notify the user about the repeat mode.
     vim.notify('Repeat mode: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(args[1])) })
+end
+
+M.setup = function(opts)
+    if opts then
+        for k, v in pairs(opts) do
+            settings[k] = v
+        end
+    end
 end
 
 M.list_players = function()
