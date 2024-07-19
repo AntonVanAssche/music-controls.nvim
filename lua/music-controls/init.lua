@@ -324,17 +324,17 @@ M.list_players = function()
     end
 
     -- Get the list of players.
-    local result = vim.fn.systemlist('playerctl -l')
+    local output = vim.fn.systemlist('playerctl -l')
 
     local players = {}
 
     -- Loop through the list of players and add them to the players table.
-    for _, player in ipairs(result) do
+    for _, player in ipairs(output) do
         table.insert(players, player)
     end
 
-    if result == 'No players found' then
-        notify(result, 'warn', { title = 'Music Controls' })
+    if output[1] == 'No players found' then
+        notify(output[1], 'warn', { title = 'Music Controls' })
     else
         notify(table.concat(players, '\n'), 'info', { title = 'Current Players' })
     end
