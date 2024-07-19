@@ -19,7 +19,7 @@ local function check_playerctl_installed()
     return true
 end
 
--- Execute the 'playerctl' command and get it's output.
+-- Execute the 'playerctl' command and get its output.
 local function exec_command(cmd)
     local output = vim.fn.systemlist(cmd)
 
