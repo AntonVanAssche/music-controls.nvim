@@ -336,13 +336,12 @@ M.list_players = function()
     end
 
     -- Get the list of players.
-    local result = exec_command('playerctl -l')
+    local result = vim.fn.systemlist('playerctl -l')
 
     local players = {}
 
     -- Loop through the list of players and add them to the players table.
-    ---@diagnostic disable-next-line: param-type-mismatch
-    for player in string.gmatch(result, '[^\n]+') do
+    for _, player in ipairs(result) do
         table.insert(players, player)
     end
 
