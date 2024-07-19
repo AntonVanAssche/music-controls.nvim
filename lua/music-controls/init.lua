@@ -7,18 +7,12 @@ local settings = {
     default_player = '',
 }
 
--- Remove the new line character from the end of the string.
-local function remove_newline(str)
-    local result = string.gsub(str, '\n', '')
-    return result
-end
-
 -- In order to make this plugin work, 'playerctl' must be installed.
 -- This function will check if 'playerctl' is installed.
 -- If not, it will display a notification.
 local function check_playerctl_installed()
     if vim.fn.executable('playerctl') == 0 then
-        notify('playerctl is not installed', 'error')
+        notify('playerctl is not installed', 'error', { title = 'Music Controls' })
         return false
     end
 
@@ -28,14 +22,10 @@ end
 -- Execute the 'playerctl' command and get it's output.
 local function exec_command(cmd)
     local output = vim.fn.systemlist(cmd)
-    local result = ''
 
-    if output then
-      for _, line in ipairs(output) do
-      remove_newline(line)
-      result = line
-      end
-    end
+    -- Only grab the first line of the output because there should
+    -- never be any more than one line for a given command.
+    local result = string.gsub(tostring(output[1]), '\n', '')
 
     return result
 end
@@ -92,9 +82,9 @@ M.current_song = function(player)
     local current_status = status(player)
 
     if result == 'No players found' then
-        notify(current_status , 'warn', { title = string.gsub(remove_newline(player[1]), '^%l', string.upper) })
+        notify(current_status , 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
     else
-        notify(current_status .. '\n' .. result, 'info', { title = string.gsub(remove_newline(player[1]), '^%l', string.upper) })
+        notify(current_status .. '\n' .. result, 'info', { title = string.gsub(player[1], '^%l', string.upper) })
     end
 end
 
@@ -254,13 +244,12 @@ M.shuffle = function(player)
     end
 
     exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle')
-    sleep(0.25)
     local result = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
 
     if result == 'No players found' then
-        notify('Player not running', 'warn', { title = string.gsub(remove_newline(player[1]), '^%l', string.upper) })
+        notify('Player not running', 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
     else
-        notify('Shuffle: ' .. result, 'info', { title = string.gsub(remove_newline(player[1]), '^%l', string.upper) })
+        notify('Shuffle: ' .. result, 'info', { title = string.gsub(player[1], '^%l', string.upper) })
     end
 end
 
@@ -311,13 +300,12 @@ M.loop = function (args)
         exec_command('playerctl -p ' .. args[1] .. ' loop ' .. args[2])
     end
 
-    sleep(0.25)
     local result = exec_command('playerctl -p ' .. args[1] .. ' loop')
 
     if result == 'No players found' then
-        notify('Player not running', 'warn', { title = string.gsub(remove_newline(args[1]), '^%l', string.upper) })
+        notify('Player not running', 'warn', { title = string.gsub(args[1], '^%l', string.upper) })
     else
-        notify('Repeat mode: ' .. result, 'info', { title = string.gsub(remove_newline(args[1]), '^%l', string.upper) })
+        notify('Repeat mode: ' .. result, 'info', { title = string.gsub(args[1], '^%l', string.upper) })
     end
 end
 
@@ -346,9 +334,9 @@ M.list_players = function()
     end
 
     if result == 'No players found' then
-      notify(result, 'warn', { title = 'Music Controls' })
+        notify(result, 'warn', { title = 'Music Controls' })
     else
-      notify(table.concat(players, '\n'), 'info', { title = 'Current Players' })
+        notify(table.concat(players, '\n'), 'info', { title = 'Current Players' })
     end
 end
 
