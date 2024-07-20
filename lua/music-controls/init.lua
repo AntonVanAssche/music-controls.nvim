@@ -1,43 +1,32 @@
 -- Require 'notify' module in order to display notifications
 -- inside the Neovim session.
-vim.notify = require('notify')
+local notify = require('notify')
 
 local M = {}
 local settings = {
-    default_player = nil,
+    default_player = '',
 }
-
--- Remove the new line character from the end of the string.
-local function remove_newline(str)
-    local result = string.gsub(str, '\n', '')
-    return result
-end
 
 -- In order to make this plugin work, 'playerctl' must be installed.
 -- This function will check if 'playerctl' is installed.
 -- If not, it will display a notification.
 local function check_playerctl_installed()
     if vim.fn.executable('playerctl') == 0 then
-        vim.notify('playerctl is not installed', 'error')
+        notify('playerctl is not installed', 'error', { title = 'Music Controls' })
         return false
     end
 
     return true
 end
 
--- Execute the 'playerctl' command.
+-- Execute the 'playerctl' command and get its output.
 local function exec_command(cmd)
-    -- Execute the command and get the output.
-    local handle = io.popen(cmd)
+    local output = vim.fn.systemlist(cmd)
 
-    if handle == nil then
-        return nil
-    end
+    -- Only grab the first line of the output because there should
+    -- never be any more than one line for a given command.
+    local result = string.gsub(tostring(output[1]), '\n', '')
 
-    local result = handle:read('*a')
-    handle:close()
-
-    -- Show the output in a new vertical split.
     return result
 end
 
@@ -53,23 +42,22 @@ local function sleep(n)
     while clock() - t0 <= n do end
 end
 
--- This function will return the status of the 'spotify' player.
--- 'Playing' or 'Paused'.
+-- This function will return the status of the player.
 local function status(player)
-    local result = exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' status')
-    result = remove_newline(result)
-
-    local icon = ''
+    local result = exec_command('playerctl -p ' .. player[1] .. ' status')
+    local state = ''
 
     if result == 'Playing' then
-        icon = '  '
+        state = '  Playing'
     elseif result == 'Paused' then
-        icon = '  '
+        state = '  Paused'
     elseif result == 'Stopped' then
-        icon = '  '
+        state = '  Stopped'
+    else
+        state = 'Player not running'
     end
 
-    return icon .. result
+    return state
 end
 
 -- This function will return the name of the current song.
@@ -84,16 +72,20 @@ M.current_song = function(player)
         if settings.default_player then
             player[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     end
 
     sleep(0.50)
     local result = exec_command('playerctl -p ' .. player[1] .. ' metadata --format "{{ title }} - {{ artist }}"')
-    local status = status(player)
+    local current_status = status(player)
 
-    vim.notify(status .. '\n' .. remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
+    if result == 'No players found' then
+        notify(current_status , 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
+    else
+        notify(current_status .. '\n' .. result, 'info', { title = string.gsub(player[1], '^%l', string.upper) })
+    end
 end
 
 -- Go to the next song or skip the given amount of songs.
@@ -110,14 +102,14 @@ M.next = function(args)
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif args[1] == string.match(args[1], '[1-9]') then
@@ -131,7 +123,7 @@ M.next = function(args)
     end
 
     for _ = 1, tonumber(args[2]) do
-        exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' next')
+        exec_command('playerctl -p ' .. args[1] .. ' next')
     end
 
     M.current_song(args)
@@ -151,14 +143,14 @@ M.prev = function(args)
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif args[1] == string.match(args[1], '[1-9]') then
@@ -172,7 +164,7 @@ M.prev = function(args)
     end
 
     for _ = 1, tonumber(args[2]) do
-        exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' previous')
+        exec_command('playerctl -p ' .. args[1] .. ' previous')
     end
 
     M.current_song(args)
@@ -193,15 +185,16 @@ M.play = function(player)
         if settings.default_player then
             player[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     end
 
-    if status(player) == '  Playing' then
-        exec_command('playerctl -p  '.. remove_newline(player[1]) .. ' pause')
+    local current_status = status(player)
+    if string.find(current_status, 'Playing') then
+        exec_command('playerctl -p  '.. player[1] .. ' pause')
     else
-        exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' play')
+        exec_command('playerctl -p ' .. player[1] .. ' play')
     end
 
     M.current_song(player)
@@ -221,12 +214,13 @@ M.pause = function(player)
         if settings.default_player then
             player[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     end
 
-    exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' pause')
+    exec_command('playerctl -p ' .. player[1] .. ' pause')
+
     M.current_song(player)
 end
 
@@ -244,16 +238,19 @@ M.shuffle = function(player)
         if settings.default_player then
             player[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     end
 
-    exec_command('playerctl -p  '.. remove_newline(player[1]) .. ' shuffle toggle')
-    sleep(0.25)
-    local result = exec_command('playerctl -p ' .. remove_newline(player[1]) .. ' shuffle')
+    exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle')
+    local result = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
 
-    vim.notify('Shuffle: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(player[1])) })
+    if result == 'No players found' then
+        notify('Player not running', 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
+    else
+        notify('Shuffle: ' .. result, 'info', { title = string.gsub(player[1], '^%l', string.upper) })
+    end
 end
 
 -- Toggle different repeat modes.
@@ -270,14 +267,14 @@ M.loop = function (args)
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     elseif not args[1] then
         if settings.default_player then
             args[1] = settings.default_player
         else
-            vim.notify('No player specified', 'error', { title = 'Music Controls' })
+            notify('No player specified', 'error', { title = 'Music Controls' })
             return
         end
     else
@@ -292,22 +289,24 @@ M.loop = function (args)
     -- When no repeat mode is specified, toggle between 'None' and 'Track'.
     -- In case a repeat mode is specified, set the repeat mode to that mode.
     if args[2] == nil then
-        local result = exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop')
+        local result = exec_command('playerctl -p ' .. args[1] .. ' loop')
 
-        if remove_newline(result) == 'None' then
-            exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop track')
+        if result == 'None' then
+            exec_command('playerctl -p ' .. args[1] .. ' loop track')
         else
-            exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop none')
+            exec_command('playerctl -p ' .. args[1] .. ' loop none')
         end
     else
-        exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop ' .. args[2])
+        exec_command('playerctl -p ' .. args[1] .. ' loop ' .. args[2])
     end
 
-    sleep(0.25)
-    local result = exec_command('playerctl -p ' .. remove_newline(args[1]) .. ' loop')
+    local result = exec_command('playerctl -p ' .. args[1] .. ' loop')
 
-    -- Notify the user about the repeat mode.
-    vim.notify('Repeat mode: ' .. remove_newline(result), 'info', { title = string.upper(remove_newline(args[1])) })
+    if result == 'No players found' then
+        notify('Player not running', 'warn', { title = string.gsub(args[1], '^%l', string.upper) })
+    else
+        notify('Repeat mode: ' .. result, 'info', { title = string.gsub(args[1], '^%l', string.upper) })
+    end
 end
 
 M.setup = function(opts)
@@ -325,16 +324,20 @@ M.list_players = function()
     end
 
     -- Get the list of players.
-    local result = exec_command('playerctl -l')
+    local output = vim.fn.systemlist('playerctl -l')
 
     local players = {}
 
     -- Loop through the list of players and add them to the players table.
-    for player in string.gmatch(result, '[^\n]+') do
+    for _, player in ipairs(output) do
         table.insert(players, player)
     end
 
-    vim.notify(table.concat(players, '\n'), 'info', { title = 'Current Players' })
+    if output[1] == 'No players found' then
+        notify(output[1], 'warn', { title = 'Music Controls' })
+    else
+        notify(table.concat(players, '\n'), 'info', { title = 'Current Players' })
+    end
 end
 
 return M
