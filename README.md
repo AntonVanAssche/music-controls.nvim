@@ -1,6 +1,6 @@
 # Music Controls
 
-Control you favorite music players with ease from within Neovim.
+Control your favorite music players with ease from within Neovim.
 
 ![preview](./assets/preview.gif)
 
@@ -13,6 +13,7 @@ Additionally, the music players you want to control (such as Spotify, VLC, etc.)
 I created Music Controls to make it more convenient and efficient to control my music player while working within Neovim.
 Instead of constantly switching workspaces or opening a terminal to control my music player, I can use this plugin to do it all within Neovim.
 You might say that I'm lazy, some say I'm not 😉!
+
 I hope that others who have similar needs will find Music Controls useful as well.
 
 ## Installation
@@ -48,19 +49,19 @@ Once the plugin is installed, you can use the following commands followed by the
 Here are some examples of how you can use the commands mentioned above:
 
 ```
-:MusicPlay spotify          # Toggle play.
+:MusicPlay spotify          # Toggle play/pause.
 :MusicNext spotify          # Skip to the next track.
 :MusicPrev spotify 4        # Skip the 4 next tracks.
-:MusicPause spotfy          # Pause the current track.
-:MusicListPlayers           # List out all players available.
+:MusicPause spotify         # Pause the current track.
+:MusicListPlayers           # List all players currently available.
 :MusicLoop Track            # Keep repeating the current track.
-:MusicLoop                  # Set the repeate mode to None or Track, depending on the current mode.
+:MusicLoop                  # Set the repeat mode to None or Track, depending on the current mode.
 :MusicShuffle spotify       # Toggle shuffle mode.
 ```
 
 #### Specifying a Default Player
 
-You can specify a default music player by adding the following code to your `init.lua` file:
+Optionally, you can specify a default music player by adding the following code to your `init.lua` file:
 
 ```lua
 {
@@ -76,7 +77,7 @@ This will set Spotify as the default music player for Music Controls. You can su
 
 With a default player set, you can use Music Controls commands without specifying a player each time.
 For example, `:MusicPlay` will automatically use the default player instead of requiring you to enter `:MusicPlay spotify`.
-After setting a default player, you can still control all other players by specifying it as the argument.
+After setting a default player, you can still control all other players by specifying it as an argument.
 
 For more information, refer to the documentation by typing `:h MusicControls`.
 
