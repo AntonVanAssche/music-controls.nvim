@@ -243,7 +243,16 @@ M.shuffle = function(player)
         end
     end
 
-    exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle')
+    local current_status = exec_command('playerctl -p '.. player[1] .. ' shuffle')
+    sleep(0.25)
+
+    if current_status == 'Off' then
+    
+      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle on')
+    else
+      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle off')
+    end
+
     sleep(0.25)
     local result = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
 
