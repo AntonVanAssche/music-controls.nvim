@@ -244,6 +244,7 @@ M.shuffle = function(player)
     end
 
     exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle')
+    sleep(0.25)
     local result = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
 
     if result == 'No players found' then
@@ -300,6 +301,7 @@ M.loop = function (args)
         exec_command('playerctl -p ' .. args[1] .. ' loop ' .. args[2])
     end
 
+    sleep(0.25)
     local result = exec_command('playerctl -p ' .. args[1] .. ' loop')
 
     if result == 'No players found' then
