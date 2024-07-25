@@ -248,21 +248,9 @@ M.shuffle = function(player)
     sleep(0.25)
 
     if current_status == 'Off' then
-<<<<<<< HEAD
-        exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle on')
-||||||| parent of 34e7b13 (feat: add .stylua.toml and .editorconfig)
-      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle on')
-=======
         exec_command('playerctl -p  ' .. player[1] .. ' shuffle toggle on')
->>>>>>> 34e7b13 (feat: add .stylua.toml and .editorconfig)
     else
-<<<<<<< HEAD
-        exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle off')
-||||||| parent of 34e7b13 (feat: add .stylua.toml and .editorconfig)
-      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle off')
-=======
         exec_command('playerctl -p  ' .. player[1] .. ' shuffle toggle off')
->>>>>>> 34e7b13 (feat: add .stylua.toml and .editorconfig)
     end
 
     sleep(0.25)
