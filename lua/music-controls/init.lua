@@ -247,9 +247,9 @@ M.shuffle = function(player)
     sleep(0.25)
 
     if current_status == 'Off' then
-      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle on')
+        exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle on')
     else
-      exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle off')
+        exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle off')
     end
 
     sleep(0.25)
