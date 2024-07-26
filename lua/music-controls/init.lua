@@ -39,7 +39,8 @@ end
 local function sleep(n)
     local clock = os.clock
     local t0 = clock()
-    while clock() - t0 <= n do end
+    while clock() - t0 <= n do
+    end
 end
 
 -- This function will return the status of the player.
@@ -82,7 +83,7 @@ M.current_song = function(player)
     local current_status = status(player)
 
     if result == 'No players found' then
-        notify(current_status , 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
+        notify(current_status, 'warn', { title = string.gsub(player[1], '^%l', string.upper) })
     else
         notify(current_status .. '\n' .. result, 'info', { title = string.gsub(player[1], '^%l', string.upper) })
     end
@@ -192,7 +193,7 @@ M.play = function(player)
 
     local current_status = status(player)
     if string.find(current_status, 'Playing') then
-        exec_command('playerctl -p  '.. player[1] .. ' pause')
+        exec_command('playerctl -p ' .. player[1] .. ' pause')
     else
         exec_command('playerctl -p ' .. player[1] .. ' play')
     end
@@ -243,7 +244,16 @@ M.shuffle = function(player)
         end
     end
 
-    exec_command('playerctl -p  '.. player[1] .. ' shuffle toggle')
+    local current_status = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
+    sleep(0.25)
+
+    if current_status == 'Off' then
+        exec_command('playerctl -p ' .. player[1] .. ' shuffle toggle on')
+    else
+        exec_command('playerctl -p ' .. player[1] .. ' shuffle toggle off')
+    end
+
+    sleep(0.25)
     local result = exec_command('playerctl -p ' .. player[1] .. ' shuffle')
 
     if result == 'No players found' then
@@ -254,7 +264,7 @@ M.shuffle = function(player)
 end
 
 -- Toggle different repeat modes.
-M.loop = function (args)
+M.loop = function(args)
     -- Check whether 'playerctl' is installed.
     if not check_playerctl_installed() then
         return
@@ -278,7 +288,7 @@ M.loop = function (args)
             return
         end
     else
-        for _, mode in ipairs({'none', 'playlist', 'track'}) do
+        for _, mode in ipairs({ 'none', 'playlist', 'track' }) do
             if string.lower(args[1]) == mode then
                 args[2] = args[1]
                 args[1] = settings.default_player
@@ -300,6 +310,7 @@ M.loop = function (args)
         exec_command('playerctl -p ' .. args[1] .. ' loop ' .. args[2])
     end
 
+    sleep(0.25)
     local result = exec_command('playerctl -p ' .. args[1] .. ' loop')
 
     if result == 'No players found' then
