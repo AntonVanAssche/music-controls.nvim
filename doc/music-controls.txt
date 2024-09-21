@@ -32,6 +32,16 @@ MusicCurrent {player}                                          *:MusicCurrent*
 
     - {player}        Name of the player to use.
 
+MusicLoop {player} {mode}                                        *:MusicLoop*
+
+    Toggle loop mode.
+
+    - {player}        Name of the player to use.
+    - {mode}          Loop mode, one of:
+        - `Track`     (Default)
+        - `None`
+        - `Playlist`
+
 MusicNext {player} {amount}                                       *:MusicNext*
 
     Skip to the next track.
