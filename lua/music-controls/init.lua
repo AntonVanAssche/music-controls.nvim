@@ -7,6 +7,7 @@ local cmds = {
   play = require('music-controls.cmds.play'),
   prev = require('music-controls.cmds.prev'),
   shuffle = require('music-controls.cmds.shuffle'),
+  volume = require('music-controls.cmds.volume'),
 }
 local M = {}
 local settings = {
@@ -15,6 +16,10 @@ local settings = {
 
 M.current = function(player)
   return cmds.current.current(player[1] or settings.default_player)
+end
+
+M.current_volume = function(player)
+  return cmds.volume.current_volume(player[1] or settings.default_player)
 end
 
 M.list_players = function()

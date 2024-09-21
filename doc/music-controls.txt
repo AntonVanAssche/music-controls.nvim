@@ -20,6 +20,12 @@ MusicPlay {player}                                                *:MusicPlay*
 
     - {player}        Name of the player to use.
 
+MusicCurrentVolume {player}                              *:MusicCurrentVolume*
+
+    Display the current volume as a percentage.
+
+    - {player}        Name of the player to use.
+
 MusicPause {player}                                              *:MusicPause*
 
     This will pause the currently playing track.

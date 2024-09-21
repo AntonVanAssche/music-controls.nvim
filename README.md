@@ -65,6 +65,13 @@ For more information, refer to the documentation by typing `:h MusicControls`.
 - **Usage**: `:MusicCurrent [player]`
 - **Example**: `:MusicCurrent spotify`
 
+### `MusicCurrentVolume`
+
+- **Description**: Display the current volume as a percentage.
+- **Usage**: `:MusicCurrentVolume [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MusicCurrentVolume spotify`
+
 ### `MusicListPlayers`
 
 - **Description**: Displays a list of available music players.
