@@ -121,6 +121,15 @@ For more information, refer to the documentation by typing `:h MusicControls`.
     - **Default**: 1
 - **Example**: `:MusicPrevious spotify 2`
 
+### `MusicSetVolume`
+
+- **Description**: Set the volume for the current music player.
+- **Usage**: `:MusicSetVolume [player] [volume]`
+  - **Player**: The music player to use (optional).
+  - **Volume**: The volume to set as a float between 0 and 1.
+    - **Default**: 0.5
+- **Example**: `:MusicSetVolume spotify 0.5`
+
 ### `MusicShuffle`
 
 - **Description**: Toggle shuffle mode for the current music player.

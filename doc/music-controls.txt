@@ -62,7 +62,15 @@ MusicPrev {player} {amount}                                       *:MusicPrev*
     - {player}        Name of the player to use.
     - {amount}        Amount of tracks to go back.
 
-MusicShuffle {player}                                           *:MusicShuffle*
+
+MusicSetVolume {player} {volume}                             *:MusicSetVolume*
+
+    Set the volume of the player.
+
+    - {player}        Name of the player to use.
+    - {volume}        Volume as a float between 0 and 1.
+
+MusicShuffle {player}                                          *:MusicShuffle*
 
    Toggle shuffle mode.
 

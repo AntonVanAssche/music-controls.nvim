@@ -72,6 +72,18 @@ M.prev = function(args)
   return cmds.prev.prev(player, amount)
 end
 
+M.set_volume = function(args)
+  local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
+  local volume = args[2] or 0.5 -- Default volume to 0.5 if args[2] is nil.
+
+  if args[1] and tonumber(args[1]) then
+    player = settings.default_player
+    volume = args[1]
+  end
+
+  return cmds.volume.set_volume(player, volume)
+end
+
 M.shuffle = function(player)
   return cmds.shuffle.shuffle(player[1] or settings.default_player)
 end
