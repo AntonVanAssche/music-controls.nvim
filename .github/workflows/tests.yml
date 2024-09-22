@@ -1,0 +1,29 @@
+---
+name: Test
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nvim-versions: ["stable", "nightly"]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: ${{ matrix.nvim-versions }}
+
+      - name: run tests
+        run: make test
