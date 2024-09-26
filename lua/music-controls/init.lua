@@ -40,6 +40,10 @@ M.loop = function(args)
   return cmds.loop.loop(player, mode)
 end
 
+M.loop_toggle = function(player)
+  return cmds.loop.loop_toggle(player[1] or settings.default_player)
+end
+
 M.next = function(args)
   local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
   local amount = args[2] or 1 -- Default amount to 1 if args[2] is nil.

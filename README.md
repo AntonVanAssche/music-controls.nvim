@@ -89,6 +89,13 @@ For more information, refer to the documentation by typing `:h MusicControls`.
     - `Playlist`
 - **Example**: `:MusicLoop spotify Playlist`
 
+### `MusicLoopToggle`
+
+- **Description**: Toggle loop mode between `None` and `Track`.
+- **Usage**: `:MusicLoopToggle [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MusicLoopToggle spotify`
+
 ### `MusicNext`
 
 - **Description**: Play the next song.
