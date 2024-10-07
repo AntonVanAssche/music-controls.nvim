@@ -4,6 +4,27 @@ Control your favorite music players with ease from within Neovim.
 
 ![preview](./assets/preview.gif)
 
+## Table of Contents
+
+- [1] [Description](#description)
+- [2] [Installation](#installation)
+  - [2.1] [Dependencies](#dependencies)
+- [3] [Configuration](#configuration)
+- [4] [Commands](#commands)
+  - [4.1] [MusicCurrent](#musiccurrent)
+  - [4.2] [MusicCurrentVolume](#musiccurrentvolume)
+  - [4.3] [MusicListPlayers](#musiclistplayers)
+  - [4.4] [MusicLoop](#musicloop)
+  - [4.5] [MusicLoopToggle](#musiclooptoggle)
+  - [4.6] [MusicNext](#musicnext)
+  - [4.7] [MusicPause](#musicpause)
+  - [4.8] [MusicPlay](#musicplay)
+  - [4.9] [MusicPrevious](#musicprevious)
+  - [4.10] [MusicSetVolume](#musicsetvolume)
+  - [4.11] [MusicShuffle](#musicshuffle)
+- [5] [License](#license)
+- [6] [Contributing](#contributing)
+
 ## Description
 
 Music Controls is a Neovim plugin that allows you to easily control your favorite
@@ -88,6 +109,13 @@ For more information, refer to the documentation by typing `:h MusicControls`.
     - `None`
     - `Playlist`
 - **Example**: `:MusicLoop spotify Playlist`
+
+### `MusicLoopToggle`
+
+- **Description**: Toggle loop mode between `None` and `Track`.
+- **Usage**: `:MusicLoopToggle [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MusicLoopToggle spotify`
 
 ### `MusicNext`
 

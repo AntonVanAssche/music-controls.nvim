@@ -48,6 +48,11 @@ MusicLoop {player} {mode}                                        *:MusicLoop*
         - `None`
         - `Playlist`
 
+MusicLoopToggle {player}                                      *:MusicLoopToggle*
+
+    Toggle loop mode between `Track` and `None`.
+    - {player}        Name of the player to use.
+
 MusicNext {player} {amount}                                       *:MusicNext*
 
     Skip to the next track.
