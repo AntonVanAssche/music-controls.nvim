@@ -92,6 +92,15 @@ M.shuffle = function(player)
   return cmds.shuffle.shuffle(player[1] or settings.default_player)
 end
 
+M._statusline = function()
+  local player = settings.default_player
+  if not player then
+    return 'No default player set'
+  end
+
+  return cmds.current._statusline(player)
+end
+
 M.setup = function(opts)
   if opts then
     for k, v in pairs(opts) do
