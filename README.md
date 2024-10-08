@@ -22,8 +22,10 @@ Control your favorite music players with ease from within Neovim.
   - [4.9] [MusicPrevious](#musicprevious)
   - [4.10] [MusicSetVolume](#musicsetvolume)
   - [4.11] [MusicShuffle](#musicshuffle)
-- [5] [License](#license)
-- [6] [Contributing](#contributing)
+- [5] [Statusline Integration](#statusline-integration)
+  - [5.1] [Example (lualine)](#example-lualine)
+- [6] [License](#license)
+- [7] [Contributing](#contributing)
 
 ## Description
 
@@ -164,6 +166,34 @@ For more information, refer to the documentation by typing `:h MusicControls`.
 - **Usage**: `:MusicShuffle [player]`
   - **Player**: The music player to use (optional).
 - **Example**: `:MusicShuffle spotify`
+
+## Statusline Integration
+
+> Note: This feature requires a `default_player` to be configured.
+
+Music Controls provides integration with statusline plugins such as
+[lualine](https://github.com/nvim-lualine/lualine.nvim) and [galaxyline](https://github.com/nvimdev/galaxyline.nvim),
+allowing you to display the current music player status directly within your statusline.
+
+### Example (lualine)
+
+This example demonstrates how to integrate Music Controls with lualine.
+Other statusline plugins can be used as well, and the process should be similar.
+Refer to the documentation of your statusline plugin for more information.
+
+```lua
+require('lualine').setup {
+  sections = {
+    lualine_x = {
+      require("music-controls")._statusline,
+    }
+  }
+}
+```
+
+An example of the statusline with Music Controls integrated:
+
+![statusline preview](/assets/statusline_preview.png)
 
 ## License
 

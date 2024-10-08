@@ -7,8 +7,9 @@ Author: Anton Van Assche <https://github.com/AntonVanAssche/>
 =============================================================================
 CONTENTS                                                   *MusicControls-TOC*
 
-    1. Commands.............|music-controls-commands|
-    2. Configuration........|music-controls-configuration|
+    1. Commands...............|music-controls-commands|
+    2. Configuration..........|music-controls-configuration|
+    3. Statusline Integration.|music-controls-statusline-integration|
 
 =============================================================================
 1. Commands                                            *MusicControlsCommands*
@@ -115,6 +116,28 @@ Default player                                    *MusicControlsDefaultPlayer*
     specifying a player each time.
     For example, `:MusicPlay` will automatically use the default player
     instead of requiring you to enter `:MusicPlay spotify`.
+
+=============================================================================
+3. Statusline Integration                  *MusicControlsStatuslineIntegration*
+
+    Music Controls can be integrated with statusline plugins like
+    `lualine` and `galaxyline`. Here is an example of how to integrate
+    Music Controls with `lualine`:
+
+    Other statusline plugins can be integrated in a similar manner.
+    Refer to the plugin's documentation for more information.
+
+    Note: This feature requires a `default_player` to be configured.
+
+>
+    require('lualine').setup {
+      sections = {
+        lualine_x = {
+          require("music-controls")._statusline,
+        }
+      }
+    }
+<
 
 =============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:

@@ -22,4 +22,22 @@ M.current = function(player)
   end
 end
 
+M._statusline = function(player)
+  if not utils.check_playerctl_installed() then
+    return 'Playerctl is not installed'
+  end
+
+  local cmd = string.format('playerctl -p %s metadata --format "{{ artist }} - {{ title }}"', player)
+  local result = utils.exec_command(cmd)
+
+  if result == 'No players found' then
+    return ''
+  end
+
+  -- Extract the first UTF-8 character by counting the leading bytes.
+  local state_icon = utils.get_player_status(player):match('[\1-\127\194-\244][\128-\191]*')
+
+  return state_icon .. ' ' .. result
+end
+
 return M
