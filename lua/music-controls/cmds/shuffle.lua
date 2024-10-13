@@ -7,7 +7,7 @@ local function shuffle_state(player)
 end
 
 M.shuffle = function(player)
-  if not player then
+  if not player or player == '' then
     return 'No player found', 'error', { title = 'Music Controls' }
   end
 

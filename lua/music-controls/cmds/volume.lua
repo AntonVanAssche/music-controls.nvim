@@ -15,7 +15,7 @@ local convert_volume_to_percentage = function(volume)
 end
 
 M.current_volume = function(player)
-  if not player then
+  if not player or player == '' then
     return 'No player found', 'error', { title = 'Music Controls' }
   end
 
@@ -30,7 +30,7 @@ end
 
 M.set_volume = function(player, volume)
   volume = tonumber(volume)
-  if not player then
+  if not player or player == '' then
     return 'No player found', 'error', { title = 'Music Controls' }
   end
 

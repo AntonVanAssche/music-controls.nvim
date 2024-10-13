@@ -7,7 +7,7 @@ local function loop_state(player)
 end
 
 M.loop = function(player, mode)
-  if not player then
+  if not player or player == '' then
     return 'No player found', 'error', { title = 'Music Controls' }
   end
 

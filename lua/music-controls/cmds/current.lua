@@ -2,7 +2,7 @@ local utils = require('music-controls.utils')
 local M = {}
 
 M.current = function(player)
-  if not player then
+  if not player or player == '' then
     return 'No player found', 'warn', { title = 'Music Controls' }
   end
 
