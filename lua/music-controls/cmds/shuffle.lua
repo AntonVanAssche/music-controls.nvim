@@ -16,15 +16,17 @@ M.shuffle = function(player)
   end
 
   local state = shuffle_state(player)
-  if state == 'Off' then
-    local cmd = string.format('playerctl -p %s shuffle on', player)
-    utils.exec_command(cmd)
-    return 'Shuffle mode: On', 'info', { title = string.format('Music Controls (%s)', player) }
-  else
-    local cmd = string.format('playerctl -p %s shuffle off', player)
-    utils.exec_command(cmd)
-    return 'Shuffle mode: Off', 'info', { title = string.format('Music Controls (%s)', player) }
+  local new_state = (state == 'Off') and 'on' or 'off'
+  local cmd = string.format('playerctl -p %s shuffle %s', player, new_state)
+
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to toggle shuffle', 'error', { title = 'Music Controls' }
   end
+
+  return string.format('Shuffle mode: %s', new_state == 'on' and 'On' or 'Off'),
+    'info',
+    { title = string.format('Music Controls (%s)', player) }
 end
 
 return M
