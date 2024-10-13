@@ -15,12 +15,17 @@ M.sleep = function(n)
 end
 
 M.get_player_status = function(player)
-  local result = M.exec_command('playerctl -p ' .. player .. ' status')
+  local cmd = string.format('playerctl -p %s status', player)
+  local success, result = pcall(M.exec_command, cmd)
   local state_icon = {
     Playing = '',
     Paused = ' ',
     Stopped = '',
   }
+
+  if not success then
+    return 'Failed to get player status'
+  end
 
   return state_icon[result] and (state_icon[result] .. ' ' .. result) or 'Unknown Status'
 end
