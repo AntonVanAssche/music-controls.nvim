@@ -11,7 +11,10 @@ M.pause = function(player)
   end
 
   local cmd = string.format('playerctl -p %s pause', player)
-  utils.exec_command(cmd)
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to pause the player', 'error', { title = 'Music Controls' }
+  end
 
   utils.sleep(0.25)
   return require('music-controls.cmds.current').current(player)
