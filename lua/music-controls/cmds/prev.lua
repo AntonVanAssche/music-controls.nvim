@@ -10,9 +10,13 @@ M.prev = function(player, amount)
     return 'Playerctl is not installed', 'error', { title = 'Music Controls' }
   end
 
-  local cmd = string.format('playerctl -p %s  previous', player)
+  amount = tonumber(amount) or 1
+  local cmd = string.format('playerctl -p %s previous', player)
   for _ = 1, amount do
-    utils.exec_command(cmd)
+    local success, _ = pcall(utils.exec_command, cmd)
+    if not success then
+      return 'Failed to skip to the previous track', 'error', { title = 'Music Controls' }
+    end
   end
 
   utils.sleep(0.5)
