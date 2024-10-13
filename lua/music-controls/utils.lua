@@ -25,4 +25,18 @@ M.get_player_status = function(player)
   return state_icon[result] and (state_icon[result] .. ' ' .. result) or 'Unknown Status'
 end
 
+M.fancy_print = function(msg, lvl, meta)
+  local notify_ok, notify = pcall(require, 'notify')
+  if notify_ok then
+    return notify(msg, lvl or 'info', meta)
+  end
+
+  if lvl == 'error' then
+    return vim.api.nvim_err_writeln(msg)
+  end
+
+  local _msg = msg:gsub('\n', ' ')
+  print(_msg)
+end
+
 return M

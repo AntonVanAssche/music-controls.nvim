@@ -9,21 +9,22 @@ local cmds = {
   shuffle = require('music-controls.cmds.shuffle'),
   volume = require('music-controls.cmds.volume'),
 }
+local utils = require('music-controls.utils')
 local M = {}
 local settings = {
   default_player = '',
 }
 
 M.current = function(player)
-  return cmds.current.current(player[1] or settings.default_player)
+  utils.fancy_print(cmds.current.current(player[1] or settings.default_player))
 end
 
 M.current_volume = function(player)
-  return cmds.volume.current_volume(player[1] or settings.default_player)
+  utils.fancy_print(cmds.volume.current_volume(player[1] or settings.default_player))
 end
 
 M.list_players = function()
-  return cmds.list_players.list_players()
+  utils.fancy_print(cmds.list_players.list_players())
 end
 
 M.loop = function(args)
@@ -37,11 +38,11 @@ M.loop = function(args)
     end
   end
 
-  return cmds.loop.loop(player, mode)
+  utils.fancy_print(cmds.loop.loop(player, mode))
 end
 
 M.loop_toggle = function(player)
-  return cmds.loop.loop_toggle(player[1] or settings.default_player)
+  utils.fancy_print(cmds.loop.loop_toggle(player[1] or settings.default_player))
 end
 
 M.next = function(args)
@@ -53,15 +54,15 @@ M.next = function(args)
     amount = args[1]
   end
 
-  return cmds.next.next(player, amount)
+  utils.fancy_print(cmds.next.next(player, amount))
 end
 
 M.pause = function(player)
-  return cmds.pause.pause(player[1] or settings.default_player)
+  utils.fancy_print(cmds.pause.pause(player[1] or settings.default_player))
 end
 
 M.play = function(player)
-  return cmds.play.play(player[1] or settings.default_player)
+  utils.fancy_print(cmds.play.play(player[1] or settings.default_player))
 end
 
 M.prev = function(args)
@@ -73,7 +74,7 @@ M.prev = function(args)
     amount = args[1]
   end
 
-  return cmds.prev.prev(player, amount)
+  utils.fancy_print(cmds.prev.prev(player, amount))
 end
 
 M.set_volume = function(args)
@@ -85,11 +86,11 @@ M.set_volume = function(args)
     volume = args[1]
   end
 
-  return cmds.volume.set_volume(player, volume)
+  utils.fancy_print(cmds.volume.set_volume(player, volume))
 end
 
 M.shuffle = function(player)
-  return cmds.shuffle.shuffle(player[1] or settings.default_player)
+  utils.fancy_print(cmds.shuffle.shuffle(player[1] or settings.default_player))
 end
 
 M._statusline = function()
