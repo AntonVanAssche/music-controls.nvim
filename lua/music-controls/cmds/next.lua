@@ -10,9 +10,14 @@ M.next = function(player, amount)
     return 'Playerctl is not installed', 'error', { title = 'Music Controls' }
   end
 
+  amount = tonumber(amount) or 1
   local cmd = string.format('playerctl -p %s next', player)
+
   for _ = 1, amount do
-    utils.exec_command(cmd)
+    local success, _ = pcall(utils.exec_command, cmd)
+    if not success then
+      return 'Failed to skip track', 'error', { title = 'Music Controls' }
+    end
   end
 
   utils.sleep(0.25)
