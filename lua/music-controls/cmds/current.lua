@@ -11,14 +11,22 @@ M.current = function(player)
   end
 
   local cmd = string.format('playerctl -p %s metadata --format "{{ artist }} - {{ title }}"', player)
-  local result = utils.exec_command(cmd)
+  local success, result = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to get current track', 'error', { title = 'Music Controls' }
+  end
+
+  if not result or result == '' then
+    return 'Failed to get metadata', 'error', { title = 'Music Controls' }
+  end
+
   local state = utils.get_player_status(player)
 
   if result == 'No players found' then
     return result, 'warn', { title = string.format('Music Controls (%s)', player) }
-  else
-    return (state .. '\n' .. result), 'info', { title = string.format('Music Controls (%s)', player) }
   end
+
+  return string.format('%s\n%s', state, result), 'info', { title = string.format('Music Controls (%s)', player) }
 end
 
 M._statusline = function(player)
@@ -27,7 +35,10 @@ M._statusline = function(player)
   end
 
   local cmd = string.format('playerctl -p %s metadata --format "{{ artist }} - {{ title }}"', player)
-  local result = utils.exec_command(cmd)
+  local success, result = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to get current track'
+  end
 
   if result == 'No players found' then
     return ''
