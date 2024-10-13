@@ -1,15 +1,33 @@
-local notify = require('notify')
 local utils = require('music-controls.utils')
 local M = {}
 
 M.list_players = function()
   if not utils.check_playerctl_installed() then
-    return notify('Playerctl is not installed', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Playerctl is not installed',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   local cmd = 'playerctl -l'
-  local players = utils.exec_command(cmd)
-  notify(string.format('Players: %s', players), 'info', { title = 'Music Controls' })
+  local success, players = pcall(utils.exec_command, cmd)
+  if not success then
+    return {
+      state = nil,
+      msg = 'Failed to fetch players',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
+  end
+
+  return {
+    state = nil,
+    msg = string.format('Players: %s', players),
+    lvl = 'info',
+    meta = { title = 'Music Controls' },
+  }
 end
 
 return M

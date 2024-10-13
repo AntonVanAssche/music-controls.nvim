@@ -1,23 +1,41 @@
-local notify = require('notify')
 local utils = require('music-controls.utils')
 local M = {}
 
 M.prev = function(player, amount)
-  if not player then
-    return notify('No player found', 'error', { title = 'Music Controls' })
+  if not player or player == '' then
+    return {
+      state = nil,
+      msg = 'No player found',
+      lvl = 'warn',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   if not utils.check_playerctl_installed() then
-    return notify('Playerctl is not installed', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Playerctl is not installed',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
-  local cmd = string.format('playerctl -p %s  previous', player)
+  amount = tonumber(amount) or 1
+  local cmd = string.format('playerctl -p %s previous', player)
   for _ = 1, amount do
-    utils.exec_command(cmd)
+    local success, _ = pcall(utils.exec_command, cmd)
+    if not success then
+      return {
+        state = nil,
+        msg = 'Failed to skip to the previous track',
+        lvl = 'error',
+        meta = { title = 'Music Controls' },
+      }
+    end
   end
 
   utils.sleep(0.5)
-  require('music-controls.cmds.current').current(player)
+  return require('music-controls.cmds.current').current(player)
 end
 
 return M

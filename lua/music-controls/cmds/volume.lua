@@ -1,13 +1,17 @@
-local notify = require('notify')
 local utils = require('music-controls.utils')
 local M = {}
 
 local is_valid_volume = function(volume)
-  return volume ~= nil
+  return volume ~= nil and volume >= 0 and volume <= 1
 end
 
 local get_volume = function(player)
   local cmd = string.format('playerctl -p %s volume', player)
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return 0
+  end
+
   return tonumber(string.format('%.2f', utils.exec_command(cmd)))
 end
 
@@ -16,44 +20,81 @@ local convert_volume_to_percentage = function(volume)
 end
 
 M.current_volume = function(player)
-  if not player then
-    return notify('No player found', 'error', { title = 'Music Controls' })
+  if not player or player == '' then
+    return {
+      state = nil,
+      msg = 'No player found',
+      lvl = 'warn',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   if not utils.check_playerctl_installed() then
-    return notify('Playerctl is not installed', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Playerctl is not installed',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
-  notify(
-    string.format('Volume: %s', convert_volume_to_percentage(get_volume(player))),
-    'info',
-    { title = string.format('Music Controls (%s)', player) }
-  )
+  local volume = get_volume(player)
+  return {
+    state = nil,
+    msg = string.format('Current volume: %s', convert_volume_to_percentage(volume)),
+    lvl = 'info',
+    meta = { title = string.format('Music Controls (%s)', player) },
+  }
 end
 
 M.set_volume = function(player, volume)
   volume = tonumber(volume)
-  if not player then
-    return notify('No player found', 'error', { title = 'Music Controls' })
+  if not player or player == '' then
+    return {
+      state = nil,
+      msg = 'No player found',
+      lvl = 'warn',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   if not utils.check_playerctl_installed() then
-    return notify('Playerctl is not installed', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Playerctl is not installed',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   if not is_valid_volume(volume) then
-    return notify('Invalid volume value', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Invalid volume value',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   local cmd = string.format('playerctl -p %s volume %s', player, volume)
-  utils.exec_command(cmd)
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return {
+      state = nil,
+      msg = 'Failed to set volume',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
+  end
 
   utils.sleep(0.5)
-  notify(
-    string.format('Volume set to: %s', convert_volume_to_percentage(get_volume(player))),
-    'info',
-    { title = string.format('Music Controls (%s)', player) }
-  )
+  local new_volume = get_volume(player)
+  return {
+    state = nil,
+    msg = string.format('Volume set to: %s', convert_volume_to_percentage(new_volume)),
+    lvl = 'info',
+    meta = { title = string.format('Music Controls (%s)', player) },
+  }
 end
 
 return M

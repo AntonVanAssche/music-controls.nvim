@@ -102,7 +102,7 @@ Default player                                    *MusicControlsDefaultPlayer*
 >
     {
       'AntonVanAssche/music-controls.nvim',
-      dependencies = { 'rcarriga/nvim-notify' },
+      dependencies = { 'rcarriga/nvim-notify' }, -- Optional
       opts = {
         default_player = 'spotify'
       }

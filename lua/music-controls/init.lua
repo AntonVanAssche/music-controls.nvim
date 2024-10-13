@@ -9,21 +9,23 @@ local cmds = {
   shuffle = require('music-controls.cmds.shuffle'),
   volume = require('music-controls.cmds.volume'),
 }
+local utils = require('music-controls.utils')
+local ui = require('music-controls.ui')
 local M = {}
 local settings = {
   default_player = '',
 }
 
 M.current = function(player)
-  return cmds.current.current(player[1] or settings.default_player)
+  ui.display(cmds.current.current(player[1] or settings.default_player))
 end
 
 M.current_volume = function(player)
-  return cmds.volume.current_volume(player[1] or settings.default_player)
+  ui.display(cmds.volume.current_volume(player[1] or settings.default_player))
 end
 
 M.list_players = function()
-  return cmds.list_players.list_players()
+  ui.display(cmds.list_players.list_players())
 end
 
 M.loop = function(args)
@@ -37,11 +39,11 @@ M.loop = function(args)
     end
   end
 
-  return cmds.loop.loop(player, mode)
+  ui.display(cmds.loop.loop(player, mode))
 end
 
 M.loop_toggle = function(player)
-  return cmds.loop.loop_toggle(player[1] or settings.default_player)
+  ui.display(cmds.loop.loop_toggle(player[1] or settings.default_player))
 end
 
 M.next = function(args)
@@ -53,15 +55,15 @@ M.next = function(args)
     amount = args[1]
   end
 
-  return cmds.next.next(player, amount)
+  ui.display(cmds.next.next(player, amount))
 end
 
 M.pause = function(player)
-  return cmds.pause.pause(player[1] or settings.default_player)
+  ui.display(cmds.pause.pause(player[1] or settings.default_player))
 end
 
 M.play = function(player)
-  return cmds.play.play(player[1] or settings.default_player)
+  ui.display(cmds.play.play(player[1] or settings.default_player))
 end
 
 M.prev = function(args)
@@ -73,7 +75,7 @@ M.prev = function(args)
     amount = args[1]
   end
 
-  return cmds.prev.prev(player, amount)
+  ui.display(cmds.prev.prev(player, amount))
 end
 
 M.set_volume = function(args)
@@ -85,11 +87,11 @@ M.set_volume = function(args)
     volume = args[1]
   end
 
-  return cmds.volume.set_volume(player, volume)
+  ui.display(cmds.volume.set_volume(player, volume))
 end
 
 M.shuffle = function(player)
-  return cmds.shuffle.shuffle(player[1] or settings.default_player)
+  ui.display(cmds.shuffle.shuffle(player[1] or settings.default_player))
 end
 
 M._statusline = function()

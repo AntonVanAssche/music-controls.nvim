@@ -1,25 +1,62 @@
-local notify = require('notify')
 local utils = require('music-controls.utils')
 local M = {}
 
 M.current = function(player)
-  if not player then
-    return notify('No player found', 'error', { title = 'Music Controls' })
+  if not player or player == '' then
+    return {
+      state = nil,
+      msg = 'No player found',
+      lvl = 'warn',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   if not utils.check_playerctl_installed() then
-    return notify('Playerctl is not installed', 'error', { title = 'Music Controls' })
+    return {
+      state = nil,
+      msg = 'Playerctl is not installed',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
   end
 
   local cmd = string.format('playerctl -p %s metadata --format "{{ artist }} - {{ title }}"', player)
-  local result = utils.exec_command(cmd)
+  local success, result = pcall(utils.exec_command, cmd)
+  if not success then
+    return {
+      state = nil,
+      msg = 'Failed to get current track',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
+  end
+
+  if not result or result == '' then
+    return {
+      state = nil,
+      msg = 'Failed to get metadata',
+      lvl = 'error',
+      meta = { title = 'Music Controls' },
+    }
+  end
+
   local state = utils.get_player_status(player)
 
-  if result == 'No player found' then
-    notify('No player found', 'warn', { title = string.format('Music Controls (%s)', player) })
-  else
-    notify(state .. '\n' .. result, 'info', { title = string.format('Music Controls (%s)', player) })
+  if result == 'No players found' then
+    return {
+      state = nil,
+      msg = result,
+      lvl = 'warn',
+      meta = { title = string.format('Music Controls (%s)', player) },
+    }
   end
+
+  return {
+    state = state,
+    msg = result,
+    lvl = 'info',
+    meta = { title = string.format('Music Controls (%s)', player) },
+  }
 end
 
 M._statusline = function(player)
@@ -28,7 +65,10 @@ M._statusline = function(player)
   end
 
   local cmd = string.format('playerctl -p %s metadata --format "{{ artist }} - {{ title }}"', player)
-  local result = utils.exec_command(cmd)
+  local success, result = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to get current track'
+  end
 
   if result == 'No players found' then
     return ''
