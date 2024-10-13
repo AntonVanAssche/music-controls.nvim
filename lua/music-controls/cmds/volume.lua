@@ -2,11 +2,16 @@ local utils = require('music-controls.utils')
 local M = {}
 
 local is_valid_volume = function(volume)
-  return volume ~= nil
+  return volume ~= nil and volume >= 0 and volume <= 1
 end
 
 local get_volume = function(player)
   local cmd = string.format('playerctl -p %s volume', player)
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return 0
+  end
+
   return tonumber(string.format('%.2f', utils.exec_command(cmd)))
 end
 
@@ -23,7 +28,8 @@ M.current_volume = function(player)
     return 'Playerctl is not installed', 'error', { title = 'Music Controls' }
   end
 
-  return string.format('Volume: %s', convert_volume_to_percentage(get_volume(player))),
+  local volume = get_volume(player)
+  return string.format('Current volume: %s', convert_volume_to_percentage(volume)),
     'info',
     { title = string.format('Music Controls (%s)', player) }
 end
@@ -43,10 +49,14 @@ M.set_volume = function(player, volume)
   end
 
   local cmd = string.format('playerctl -p %s volume %s', player, volume)
-  utils.exec_command(cmd)
+  local success, _ = pcall(utils.exec_command, cmd)
+  if not success then
+    return 'Failed to set volume', 'error', { title = 'Music Controls' }
+  end
 
   utils.sleep(0.5)
-  return string.format('Volume set to: %s', convert_volume_to_percentage(get_volume(player))),
+  local new_volume = get_volume(player)
+  return string.format('Volume set to: %s', convert_volume_to_percentage(new_volume)),
     'info',
     { title = string.format('Music Controls (%s)', player) }
 end
