@@ -1,111 +1,135 @@
 local M = {}
 local cmds = {
   {
-    name = 'MusicPlay',
-    description = 'Toggle play/pause',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').play(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicPause',
-    description = 'Pause music',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').pause(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicNext',
-    description = 'Next track',
-    func = function(opt)
-      local player = opt.fargs[1]
-      local amount = opt.fargs[2]
-      require('music-controls').next(player, amount)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicPrev',
-    description = 'Previous track',
-    func = function(opt)
-      local player = opt.fargs[1]
-      local amount = opt.fargs[2]
-      require('music-controls').prev(player, amount)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicCurrent',
-    description = 'Current track',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').current(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicShuffle',
-    description = 'Toggle shuffle',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').shuffle(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicLoop',
-    description = 'Loop mode',
-    func = function(opt)
-      local player = opt.fargs[1]
-      local mode = opt.fargs[2]
-      require('music-controls').loop(player, mode)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicLoopToggle',
-    description = 'Toggle loop mode',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').toggle_loop(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicCurrentVolume',
-    description = 'Current volume',
-    func = function(opt)
-      local player = opt.fargs[1]
-      require('music-controls').get_volume(player)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicSetVolume',
-    description = 'Set volume',
-    func = function(opt)
-      local player = opt.fargs[1]
-      local volume = opt.fargs[2]
-      require('music-controls').set_volume(player, volume)
-    end,
-    opts = { nargs = '*' },
-  },
-  {
-    name = 'MusicListPlayers',
+    name = 'MPlayers',
     description = 'List players',
     func = function()
       require('music-controls').get_players()
     end,
     opts = {},
+    deprecated = 'MusicListPlayers',
+  },
+  {
+    name = 'MPlay',
+    description = 'Toggle play/pause',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').play(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicPlay',
+  },
+  {
+    name = 'MPause',
+    description = 'Pause music',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').pause(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicPause',
+  },
+  {
+    name = 'MNext',
+    description = 'Next track',
+    func = function(args)
+      local player = args.fargs[1]
+      local amount = args.fargs[2]
+      require('music-controls').next(player, amount)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicNext',
+  },
+  {
+    name = 'MPrev',
+    description = 'Previous track',
+    func = function(args)
+      local player = args.fargs[1]
+      local amount = args.fargs[2]
+      require('music-controls').prev(player, amount)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicPrev',
+  },
+  {
+    name = 'MCurrent',
+    description = 'Current track',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').current(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicCurrent',
+  },
+  {
+    name = 'MShuffle',
+    description = 'Toggle shuffle',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').shuffle(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicShuffle',
+  },
+  {
+    name = 'MLoop',
+    description = 'Loop mode',
+    func = function(args)
+      local player = args.fargs[1]
+      local mode = args.fargs[2]
+      require('music-controls').loop(player, mode)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicLoop',
+  },
+  {
+    name = 'MLoopToggle',
+    description = 'Toggle loop mode',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').toggle_loop(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicLoopToggle',
+  },
+  {
+    name = 'MVolumeGet',
+    description = 'Current volume',
+    func = function(args)
+      local player = args.fargs[1]
+      require('music-controls').get_volume(player)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicCurrentVolume',
+  },
+  {
+    name = 'MVolumeSet',
+    description = 'Set volume',
+    func = function(args)
+      local player = args.fargs[1]
+      local volume = args.fargs[2]
+      require('music-controls').set_volume(player, volume)
+    end,
+    opts = { nargs = '*' },
+    deprecated = 'MusicSetVolume',
   },
 }
 
-local _create_command = function(name, func, opts)
+local _create_command = function(name, func, opts, deprecated)
   vim.api.nvim_create_user_command(name, func, opts)
+
+  if deprecated then
+    vim.api.nvim_create_user_command(deprecated, function(args)
+      vim.api.nvim_echo({
+        {
+          "WARNING: this commands has been marked as deprecated, use '" .. name .. "' instead",
+          'WarningMsg',
+        },
+      }, true, {})
+
+      func(args)
+    end, opts)
+  end
 end
 
 -- Should only be called from plugin directory.
@@ -113,7 +137,7 @@ M.setup = function(opts)
   opts = opts or {}
 
   for _, cmd in ipairs(cmds) do
-    _create_command(cmd.name, cmd.func, cmd.opts)
+    _create_command(cmd.name, cmd.func, cmd.opts, cmd.deprecated)
   end
 end
 
