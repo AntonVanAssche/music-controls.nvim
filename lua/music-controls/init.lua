@@ -13,25 +13,26 @@ local config = require('music-controls.config')
 local M = {}
 
 M.current = function(player)
-  return cmds.current.current(player[1] or config.config.default_player)
+  return cmds.current.current(player or config.config.default_player)
 end
 
 M.current_volume = function(player)
-  return cmds.volume.current_volume(player[1] or config.config.default_player)
+  return cmds.volume.current_volume(player or config.config.default_player)
 end
 
 M.list_players = function()
   return cmds.list_players.list_players()
 end
 
-M.loop = function(args)
-  local player = args[1] or config.config.default_player -- Use default player if args[1] is nil.
-  local mode = args[2] or 'Track' -- Default to 'Track' if no mode is provided.
+M.loop = function(player, mode)
+  player = player or config.config.default_player
+  mode = mode or 'Track'
 
-  if not args[2] then
-    if args[1] == 'Track' or args[1] == 'Playlist' or args[1] == 'None' then
+  local modes = { 'Track', 'Playlist', 'None' }
+  if not mode then
+    if player and not modes:includes(player) then
+      mode = player
       player = config.config.default_player
-      mode = args[1]
     end
   end
 
@@ -39,55 +40,55 @@ M.loop = function(args)
 end
 
 M.loop_toggle = function(player)
-  return cmds.loop.loop_toggle(player[1] or config.config.default_player)
+  return cmds.loop.loop_toggle(player or config.config.default_player)
 end
 
-M.next = function(args)
-  local player = args[1] or config.config.default_player -- Use default player if args[1] is nil.
-  local amount = args[2] or 1 -- Default amount to 1 if args[2] is nil.
+M.next = function(player, amount)
+  player = player or config.config.default_player
+  amount = amount or 1
 
-  if args[1] and tonumber(args[1]) then
+  if player and tonumber(player) then
     player = config.config.default_player
-    amount = args[1]
+    amount = player
   end
 
   return cmds.next.next(player, amount)
 end
 
 M.pause = function(player)
-  return cmds.pause.pause(player[1] or config.config.default_player)
+  return cmds.pause.pause(player or config.config.default_player)
 end
 
 M.play = function(player)
-  return cmds.play.play(player[1] or config.config.default_player)
+  return cmds.play.play(player or config.config.default_player)
 end
 
-M.prev = function(args)
-  local player = args[1] or config.config.default_player -- Use default player if args[1] is nil.
-  local amount = args[2] or 1 -- Default amount to 1 if args[2] is nil.
+M.prev = function(player, amount)
+  player = player or config.config.default_player
+  amount = amount or 1
 
-  if args[1] and tonumber(args[1]) then
+  if player and tonumber(player) then
     player = config.config.default_player
-    amount = args[1]
+    amount = player
   end
 
   return cmds.prev.prev(player, amount)
 end
 
-M.set_volume = function(args)
-  local player = args[1] or config.config.default_player -- Use default player if args[1] is nil.
-  local volume = args[2] or 0.5 -- Default volume to 0.5 if args[2] is nil.
+M.set_volume = function(player, volume)
+  player = player or config.config.default_player
+  volume = volume or 0.5
 
-  if args[1] and tonumber(args[1]) then
+  if player and tonumber(player) then
     player = config.config.default_player
-    volume = args[1]
+    volume = player
   end
 
   return cmds.volume.set_volume(player, volume)
 end
 
 M.shuffle = function(player)
-  return cmds.shuffle.shuffle(player[1] or config.config.default_player)
+  return cmds.shuffle.shuffle(player or config.config.default_player)
 end
 
 M._statusline = function()
