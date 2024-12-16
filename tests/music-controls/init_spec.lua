@@ -3,15 +3,15 @@
 local plugin = require('music-controls')
 
 describe('Setup', function()
-  it('without opts', function()
+  it('should load without opts', function()
     plugin.setup()
   end)
 
-  it('with empty opts', function()
+  it('should load with empty opts', function()
     plugin.setup({})
   end)
 
-  it('with opts', function()
+  it('should load with opts', function()
     plugin.setup({
       default_player = 'spotify',
     })
