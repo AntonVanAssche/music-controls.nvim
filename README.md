@@ -50,7 +50,6 @@ the plugin. Other plugin managers can be used as well.
 ```lua
 {
   'AntonVanAssche/music-controls.nvim',
-  dependencies = { 'rcarriga/nvim-notify' }
 }
 ```
 
@@ -66,7 +65,6 @@ to your `init.lua` file:
 ```lua
 {
   'AntonVanAssche/music-controls.nvim',
-  dependencies = { 'rcarriga/nvim-notify' },
   opts = {
     default_player = 'spotify'
   }

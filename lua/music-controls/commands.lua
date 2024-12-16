@@ -33,7 +33,8 @@ local cmds = {
     description = 'Previous track',
     func = function(opt)
       local player = opt.fargs[1]
-      require('music-controls').prev(player)
+      local amount = opt.fargs[2]
+      require('music-controls').prev(player, amount)
     end,
     opts = { nargs = '*' },
   },
@@ -70,7 +71,7 @@ local cmds = {
     description = 'Toggle loop mode',
     func = function(opt)
       local player = opt.fargs[1]
-      require('music-controls').loop_toggle(player)
+      require('music-controls').toggle_loop(player)
     end,
     opts = { nargs = '*' },
   },
@@ -79,7 +80,7 @@ local cmds = {
     description = 'Current volume',
     func = function(opt)
       local player = opt.fargs[1]
-      require('music-controls').current_volume(player)
+      require('music-controls').get_volume(player)
     end,
     opts = { nargs = '*' },
   },
@@ -97,7 +98,7 @@ local cmds = {
     name = 'MusicListPlayers',
     description = 'List players',
     func = function()
-      require('music-controls').list_players()
+      require('music-controls').get_players()
     end,
     opts = {},
   },
