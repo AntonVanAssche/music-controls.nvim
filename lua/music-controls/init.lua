@@ -40,10 +40,7 @@ end
 
 M.next = function(_player, amount)
   _player = _player or config.config.default_player
-  if _player and tonumber(_player) then
-    amount = _player
-    _player = config.config.default_player
-  end
+  amount = amount or 1
 
   local result = controls.next(_player, amount)
   if not result then
@@ -57,10 +54,7 @@ end
 
 M.prev = function(_player, amount)
   _player = _player or config.config.default_player
-  if _player and tonumber(_player) then
-    amount = _player
-    _player = config.config.default_player
-  end
+  amount = amount or 1
 
   local result = controls.previous(_player, amount)
   if not result then
@@ -90,14 +84,7 @@ end
 
 M.loop = function(_player, mode)
   _player = _player or config.config.default_player
-
-  if not mode then
-    local modes = { 'Track', 'Playlist', 'None' }
-    if vim.tbl_contains(modes, _player) then
-      mode = _player
-      _player = config.config.default_player
-    end
-  end
+  mode = mode or 'Track'
 
   local result = controls.loop(_player, mode)
   if not result then
@@ -129,12 +116,7 @@ end
 
 M.set_volume = function(_player, vol)
   _player = _player or config.config.default_player
-  vol = tonumber(vol)
-
-  if _player and tonumber(_player) then
-    vol = tonumber(_player)
-    _player = config.config.default_player
-  end
+  vol = tonumber(vol) or 0.5
 
   local result = player.set_volume(_player, vol)
   if not result then

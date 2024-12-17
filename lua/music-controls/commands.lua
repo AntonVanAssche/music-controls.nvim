@@ -33,8 +33,15 @@ local cmds = {
     name = 'MNext',
     description = 'Next track',
     func = function(args)
-      local player = args.fargs[1]
-      local amount = args.fargs[2]
+      local player, amount = nil, nil
+      for _, o in ipairs(args.fargs) do
+        if tonumber(o) then
+          amount = tonumber(o)
+        else
+          player = o
+        end
+      end
+
       require('music-controls').next(player, amount)
     end,
     opts = { nargs = '*' },
@@ -44,8 +51,15 @@ local cmds = {
     name = 'MPrev',
     description = 'Previous track',
     func = function(args)
-      local player = args.fargs[1]
-      local amount = args.fargs[2]
+      local player, amount = nil, nil
+      for _, o in ipairs(args.fargs) do
+        if tonumber(o) then
+          amount = tonumber(o)
+        else
+          player = o
+        end
+      end
+
       require('music-controls').prev(player, amount)
     end,
     opts = { nargs = '*' },
@@ -75,8 +89,15 @@ local cmds = {
     name = 'MLoop',
     description = 'Loop mode',
     func = function(args)
-      local player = args.fargs[1]
-      local mode = args.fargs[2]
+      local player, mode = nil, nil
+      for _, o in ipairs(args.fargs) do
+        if vim.tbl_contains({ 'Track', 'Playlist', 'None' }, o) then
+          mode = o
+        else
+          player = o
+        end
+      end
+
       require('music-controls').loop(player, mode)
     end,
     opts = { nargs = '*' },
@@ -106,8 +127,15 @@ local cmds = {
     name = 'MVolumeSet',
     description = 'Set volume',
     func = function(args)
-      local player = args.fargs[1]
-      local volume = args.fargs[2]
+      local player, volume = nil, nil
+      for _, o in ipairs(args.fargs) do
+        if tonumber(o) then
+          volume = tonumber(o)
+        else
+          player = o
+        end
+      end
+
       require('music-controls').set_volume(player, volume)
     end,
     opts = { nargs = '*' },
