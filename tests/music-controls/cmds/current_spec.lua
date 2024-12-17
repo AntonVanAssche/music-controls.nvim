@@ -1,2 +1,0 @@
--- tests/music-controls/cmds/current_spec.lua
--- TODO: Write tests

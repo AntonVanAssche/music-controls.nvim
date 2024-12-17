@@ -1,2 +1,0 @@
--- tests/music-controls/cmds/play_spec.lua
--- TODO: Write tests
