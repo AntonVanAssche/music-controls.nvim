@@ -1,112 +1,140 @@
-local cmds = {
-  list_players = require('music-controls.cmds.list_players'),
-  current = require('music-controls.cmds.current'),
-  loop = require('music-controls.cmds.loop'),
-  next = require('music-controls.cmds.next'),
-  pause = require('music-controls.cmds.pause'),
-  play = require('music-controls.cmds.play'),
-  prev = require('music-controls.cmds.prev'),
-  shuffle = require('music-controls.cmds.shuffle'),
-  volume = require('music-controls.cmds.volume'),
-}
+local config = require('music-controls.config')
+local utils = require('music-controls.utils')
+local controls = require('music-controls.controls')
+local player = require('music-controls.player')
+
 local M = {}
-local settings = {
-  default_player = '',
-}
 
-M.current = function(player)
-  return cmds.current.current(player[1] or settings.default_player)
+M.get_players = function()
+  local _players = player.get_all() or {}
+
+  vim.api.nvim_echo({ { 'Players:' } }, true, {})
+  for _, _player in ipairs(_players) do
+    vim.api.nvim_echo({ { _player } }, true, {})
+  end
 end
 
-M.current_volume = function(player)
-  return cmds.volume.current_volume(player[1] or settings.default_player)
-end
-
-M.list_players = function()
-  return cmds.list_players.list_players()
-end
-
-M.loop = function(args)
-  local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
-  local mode = args[2] or 'Track' -- Default to 'Track' if no mode is provided.
-
-  if not args[2] then
-    if args[1] == 'Track' or args[1] == 'Playlist' or args[1] == 'None' then
-      player = settings.default_player
-      mode = args[1]
-    end
+M.play = function(_player)
+  _player = _player or config.config.default_player
+  local result = controls.play(_player)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not toggle play/pause')
   end
 
-  return cmds.loop.loop(player, mode)
+  utils.sleep(0.25)
+  local state, title, artist = controls.current(_player)
+  vim.api.nvim_echo({ { string.format('%s %s - %s', state, title, artist) } }, true, {})
 end
 
-M.loop_toggle = function(player)
-  return cmds.loop.loop_toggle(player[1] or settings.default_player)
-end
-
-M.next = function(args)
-  local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
-  local amount = args[2] or 1 -- Default amount to 1 if args[2] is nil.
-
-  if args[1] and tonumber(args[1]) then
-    player = settings.default_player
-    amount = args[1]
+M.pause = function(_player)
+  _player = _player or config.config.default_player
+  local result = controls.pause(_player)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not pause')
   end
 
-  return cmds.next.next(player, amount)
+  utils.sleep(0.25)
+  local state, title, artist = controls.current(_player)
+  vim.api.nvim_echo({ { string.format('%s %s - %s', state, title, artist) } }, true, {})
 end
 
-M.pause = function(player)
-  return cmds.pause.pause(player[1] or settings.default_player)
-end
+M.next = function(_player, amount)
+  _player = _player or config.config.default_player
+  amount = amount or 1
 
-M.play = function(player)
-  return cmds.play.play(player[1] or settings.default_player)
-end
-
-M.prev = function(args)
-  local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
-  local amount = args[2] or 1 -- Default amount to 1 if args[2] is nil.
-
-  if args[1] and tonumber(args[1]) then
-    player = settings.default_player
-    amount = args[1]
+  local result = controls.next(_player, amount)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not skip')
   end
 
-  return cmds.prev.prev(player, amount)
+  utils.sleep(0.25)
+  local state, title, artist = controls.current(_player)
+  vim.api.nvim_echo({ { string.format('%s %s - %s', state, title, artist) } }, true, {})
 end
 
-M.set_volume = function(args)
-  local player = args[1] or settings.default_player -- Use default player if args[1] is nil.
-  local volume = args[2] or 0.5 -- Default volume to 0.5 if args[2] is nil.
+M.prev = function(_player, amount)
+  _player = _player or config.config.default_player
+  amount = amount or 1
 
-  if args[1] and tonumber(args[1]) then
-    player = settings.default_player
-    volume = args[1]
+  local result = controls.previous(_player, amount)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not go back')
   end
 
-  return cmds.volume.set_volume(player, volume)
+  utils.sleep(0.25)
+  local state, title, artist = controls.current(_player)
+  vim.api.nvim_echo({ { string.format('%s %s - %s', state, title, artist) } }, true, {})
 end
 
-M.shuffle = function(player)
-  return cmds.shuffle.shuffle(player[1] or settings.default_player)
+M.current = function(_player)
+  _player = _player or config.config.default_player
+  local state, title, artist = controls.current(_player)
+  vim.api.nvim_echo({ { string.format('%s %s - %s', state, title, artist) } }, true, {})
+end
+
+M.shuffle = function(_player)
+  _player = _player or config.config.default_player
+  local result = controls.shuffle(_player)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not toggle shuffle mode')
+  end
+
+  vim.api.nvim_echo({ { string.format('Shuffle mode: %s', result) } }, true, {})
+end
+
+M.loop = function(_player, mode)
+  _player = _player or config.config.default_player
+  mode = mode or 'Track'
+
+  local result = controls.loop(_player, mode)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not set loop mode')
+  end
+
+  vim.api.nvim_echo({ { string.format('Loop mode: %s', result) } }, true, {})
+end
+
+M.toggle_loop = function(_player)
+  _player = _player or config.config.default_player
+  local result = controls.toggle_loop(_player)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not toggle loop mode')
+  end
+
+  vim.api.nvim_echo({ { string.format('Loop mode: %s', result) } }, true, {})
+end
+
+M.get_volume = function(_player)
+  _player = _player or config.config.default_player
+  local result = player.get_volume(_player)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not set volume')
+  end
+
+  vim.api.nvim_echo({ { string.format('Volume: %s%%', result) } }, true, {})
+end
+
+M.set_volume = function(_player, vol)
+  _player = _player or config.config.default_player
+  vol = tonumber(vol) or 0.5
+
+  local result = player.set_volume(_player, vol)
+  if not result then
+    vim.api.nvim_err_writeln('MusicControls: Could not set volume')
+  end
+
+  vim.api.nvim_echo({ { string.format('Volume: %s%%', result) } }, true, {})
 end
 
 M._statusline = function()
-  local player = settings.default_player
-  if not player then
-    return 'No default player set'
-  end
-
-  return cmds.current._statusline(player)
+  local _player = config.config.default_player
+  local state, title, artist = controls.current(_player)
+  local str = string.format('%s %s - %s', state, title, artist)
+  return str
 end
 
 M.setup = function(opts)
-  if opts then
-    for k, v in pairs(opts) do
-      settings[k] = v
-    end
-  end
+  config.setup(opts)
 end
 
 return M

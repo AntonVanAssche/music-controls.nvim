@@ -1,2 +1,0 @@
--- tests/music-controls/cmds/list_players_spec.lua
--- TODO: Write tests

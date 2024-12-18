@@ -5,16 +5,20 @@ local assert = require('luassert')
 local eq = assert.are.same
 
 describe('Utils Module', function()
-  it('checks if playerctl is installed', function()
-    local is_installed = utils.check_playerctl_installed()
+  it('should return fasle if the player is not valid', function()
+    local result = utils.validate_player(nil)
+    eq(result, false)
+  end)
 
-    eq(type(is_installed), 'boolean') -- it should return a boolean value.
+  it('should return true if the player is valid', function()
+    local result = utils.validate_player('spotify')
+    eq(result, true)
   end)
 
   it('executes a system command and returns the output', function()
-    local output = utils.exec_command('echo Hello, World!')
+    local result = utils.exec_command({ 'echo', '-n', 'Hello, World!' })
 
-    eq(output, 'Hello, World!')
+    eq(result, 'Hello, World!')
   end)
 
   it('sleeps for the specified duration', function()
@@ -23,29 +27,5 @@ describe('Utils Module', function()
     local finish = os.time()
 
     assert(finish - start >= 1)
-  end)
-
-  it('gets the player status with valid player', function()
-    local mock_exec_command = function(cmd)
-      return 'Playing'
-    end
-
-    utils.exec_command = mock_exec_command
-
-    local status = utils.get_player_status('spotify')
-
-    eq(status, ' Playing')
-  end)
-
-  it('returns unknown status if playerctl returns an unknown state', function()
-    local mock_exec_command = function(cmd)
-      return 'Unknown'
-    end
-
-    utils.exec_command = mock_exec_command
-
-    local status = utils.get_player_status('spotify')
-
-    eq(status, 'Unknown Status')
   end)
 end)

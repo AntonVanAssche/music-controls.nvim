@@ -11,17 +11,17 @@ Control your favorite music players with ease from within Neovim.
   - [2.1] [Dependencies](#dependencies)
 - [3] [Configuration](#configuration)
 - [4] [Commands](#commands)
-  - [4.1] [MusicCurrent](#musiccurrent)
-  - [4.2] [MusicCurrentVolume](#musiccurrentvolume)
-  - [4.3] [MusicListPlayers](#musiclistplayers)
-  - [4.4] [MusicLoop](#musicloop)
-  - [4.5] [MusicLoopToggle](#musiclooptoggle)
-  - [4.6] [MusicNext](#musicnext)
-  - [4.7] [MusicPause](#musicpause)
-  - [4.8] [MusicPlay](#musicplay)
-  - [4.9] [MusicPrevious](#musicprevious)
-  - [4.10] [MusicSetVolume](#musicsetvolume)
-  - [4.11] [MusicShuffle](#musicshuffle)
+  - [4.1] [MPlayers](#mplayers)
+  - [4.2] [MPlay](#mplay)
+  - [4.3] [MPause](#mpause)
+  - [4.4] [MNext](#mnext)
+  - [4.5] [MPrev](#mprev)
+  - [4.6] [MCurrent](#mcurrent)
+  - [4.7] [MShuffle](#mshuffle)
+  - [4.8] [MLoop](#mloop)
+  - [4.9] [MLoopToggle](#mlooptoggle)
+  - [4.10] [MVolumeGet](#mvolumeget)
+  - [4.11] [MVolumeSet](#mvolumeset)
 - [5] [Statusline Integration](#statusline-integration)
   - [5.1] [Example (lualine)](#example-lualine)
 - [6] [License](#license)
@@ -50,7 +50,6 @@ the plugin. Other plugin managers can be used as well.
 ```lua
 {
   'AntonVanAssche/music-controls.nvim',
-  dependencies = { 'rcarriga/nvim-notify' }
 }
 ```
 
@@ -66,7 +65,6 @@ to your `init.lua` file:
 ```lua
 {
   'AntonVanAssche/music-controls.nvim',
-  dependencies = { 'rcarriga/nvim-notify' },
   opts = {
     default_player = 'spotify'
   }
@@ -81,91 +79,91 @@ Refer to the [commands](#commands) section for more information.
 
 For more information, refer to the documentation by typing `:h MusicControls`.
 
-### `MusicCurrent`
-
-- **Description**: Displays the current song playing.
-  - **Player**: The music player to use (optional).
-- **Usage**: `:MusicCurrent [player]`
-- **Example**: `:MusicCurrent spotify`
-
-### `MusicCurrentVolume`
-
-- **Description**: Display the current volume as a percentage.
-- **Usage**: `:MusicCurrentVolume [player]`
-  - **Player**: The music player to use (optional).
-- **Example**: `:MusicCurrentVolume spotify`
-
-### `MusicListPlayers`
+### `Mplayers`
 
 - **Description**: Displays a list of available music players.
-- **Usage**: `:MusicListPlayers`
-- **Example**: `:MusicListPlayers`
+- **Usage**: `:Mplayers`
+- **Example**: `:Mplayers`
 
-### `MusicLoop`
+### `MPlay`
 
-- **Description**: Set a loop mode for the current music player.
-- **Usage**: `:MusicLoop [player] [mode]`
+- **Description**: Toggle play/pause the current track.
+- **Usage**: `:MPlay [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MPlay spotify`
+
+### `MPause`
+
+- **Description**: Pause the current track.
+- **Usage**: `:MPause [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MPause spotify`
+
+### `MNext`
+
+- **Description**: Play the next track.
+- **Usage**: `:MNext [player] [amount]`
+  - **Player**: The music player to use (optional).
+  - **Amount**: The number of songs to skip (optional).
+    - **Default**: 1
+- **Example**: `:MNext spotify 2`
+
+### `MPrev`
+
+- **Description**: Play the previous track.
+- **Usage**: `:MPrev [player] [amount]`
+  - **Player**: The music player to use (optional).
+  - **Amount**: The number of songs to skip (optional).
+    - **Default**: 1
+- **Example**: `:MPrev spotify 2`
+
+### `MCurrent`
+
+- **Description**: Displays the current track playing.
+  - **Player**: The music player to use (optional).
+- **Usage**: `:MCurrent [player]`
+- **Example**: `:MCurrent spotify`
+
+### `MShuffle`
+
+- **Description**: Toggle shuffle mode.
+- **Usage**: `:MShuffle [player]`
+  - **Player**: The music player to use (optional).
+- **Example**: `:MShuffle spotify`
+
+### `MLoop`
+
+- **Description**: Set a loop mode.
+- **Usage**: `:MLoop [player] [mode]`
   - **Player**: The music player to use (optional).
   - **Mode**:
     - `Track` (Default)
     - `None`
     - `Playlist`
-- **Example**: `:MusicLoop spotify Playlist`
+- **Example**: `:MLoop spotify Playlist`
 
-### `MusicLoopToggle`
+### `MLoopToggle`
 
 - **Description**: Toggle loop mode between `None` and `Track`.
-- **Usage**: `:MusicLoopToggle [player]`
+- **Usage**: `:MLoopToggle [player]`
   - **Player**: The music player to use (optional).
-- **Example**: `:MusicLoopToggle spotify`
+- **Example**: `:MLoopToggle spotify`
 
-### `MusicNext`
+### `MVolumeGet`
 
-- **Description**: Play the next song.
-- **Usage**: `:MusicNext [player] [amount]`
+- **Description**: Display the current volume as a percentage.
+- **Usage**: `:MVolumeGet [player]`
   - **Player**: The music player to use (optional).
-  - **Amount**: The number of songs to skip (optional).
-    - **Default**: 1
-- **Example**: `:MusicNext spotify 2`
+- **Example**: `:MVolumeGet spotify`
 
-### `MusicPause`
+### `MVolumeSet`
 
-- **Description**: Pause the current song.
-- **Usage**: `:MusicPause [player]`
-  - **Player**: The music player to use (optional).
-- **Example**: `:MusicPause spotify`
-
-### `MusicPlay`
-
-- **Description**: Toggle play/pause the current song.
-- **Usage**: `:MusicPlay [player]`
-  - **Player**: The music player to use (optional).
-- **Example**: `:MusicPlay spotify`
-
-### `MusicPrevious`
-
-- **Description**: Play the previous song.
-- **Usage**: `:MusicPrevious [player] [amount]`
-  - **Player**: The music player to use (optional).
-  - **Amount**: The number of songs to skip (optional).
-    - **Default**: 1
-- **Example**: `:MusicPrevious spotify 2`
-
-### `MusicSetVolume`
-
-- **Description**: Set the volume for the current music player.
-- **Usage**: `:MusicSetVolume [player] [volume]`
+- **Description**: Set the volume to a specific value.
+- **Usage**: `:MVolumeSet [player] [volume]`
   - **Player**: The music player to use (optional).
   - **Volume**: The volume to set as a float between 0 and 1.
     - **Default**: 0.5
-- **Example**: `:MusicSetVolume spotify 0.5`
-
-### `MusicShuffle`
-
-- **Description**: Toggle shuffle mode for the current music player.
-- **Usage**: `:MusicShuffle [player]`
-  - **Player**: The music player to use (optional).
-- **Example**: `:MusicShuffle spotify`
+- **Example**: `:MVolumeSet spotify 0.5`
 
 ## Statusline Integration
 
