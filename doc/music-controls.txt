@@ -1,159 +1,183 @@
-*music-controls.txt* Control your favorite music players with ease.
-*MusicControls*
+*music-controls*  Control your favorite music players with ease.
 
-License: MIT
-Author: Anton Van Assche <https://github.com/AntonVanAssche/>
+Minimum version of Neovim: nightly
 
-=============================================================================
-CONTENTS                                                   *MusicControls-TOC*
+Author(s):
+  Anton Van Assche <https://github.com/AntonVanAssche/>
 
-    1. Commands...............|music-controls-commands|
-    2. Deprecations...........|music-controls-deprecations|
-    2. Configuration..........|music-controls-configuration|
-    3. Statusline Integration.|music-controls-statusline-integration|
+                                                        Table of Contents: gO
+===============================================================================
+INTRODUCTION                                             *music-controls-intro*
 
-=============================================================================
-1. Commands                                            *MusicControlsCommands*
+Music Controls provides an intuitive way to control music players directly
+from Neovim. Whether you’re managing playlists or adjusting volume, this
+plugin integrates seamlessly with your workflow to keep you in the zone.
 
-MPlayers                                                           *:MPlayers*
+===============================================================================
+COMMANDS                                              *music-controls-commands*
 
-    Display a list of all the available players.
+                                                                    *:MPlayers*
+:MPlayers
 
-MPlay {player}                                                        *:MPlay*
+Display a list of all available players.
 
-    Toggle play/pause the currently playing track.
+                                                                       *:MPlay*
+:MPlay {player}
 
-    - {player}        Name of the player to use.
+Toggle play/pause for the currently playing track.
 
-MPause {player}                                                      *:MPause*
+- {player} Name of the player to use.
 
-    Pause the current track.
+                                                                      *:MPause*
+:MPause {player}
 
-    - {player}        Name of the player to use.
+Pause the current track.
 
-MNext {player} {amount}                                               *:MNext*
+- {player} Name of the player to use.
 
-    Play the next track.
+                                                                      *:MNext*
+:MNext {player} {amount}
 
-    - {player}        Name of the player to use.
-    - {amount}        Amount of tracks to skip
+Play the next track.
 
-MPrev {player} {amount}                                               *:MPrev*
+- {player} Name of the player to use.
+- {amount} Number of tracks to skip (default: 1).
 
-    Play the previous track.
+                                                                       *:MPrev*
+:MPrev {player} {amount}
 
-    - {player}        Name of the player to use.
-    - {amount}        Amount of tracks to go back.
+Play the previous track.
 
-MCurrent {player}                                                  *:MCurrent*
+- {player} Name of the player to use.
+- {amount} Number of tracks to go back (default: 1).
 
-    Display the current track playing.
+                                                                    *:MCurrent*
+:MCurrent {player}
 
-    - {player}        Name of the player to use.
+Display the current track playing.
 
-MShuffle {player}                                              *:MusicShuffle*
+- {player} Name of the player to use.
 
-   Toggle shuffle mode.
+                                                                    *:MShuffle*
+:MShuffle {player}
 
-    - {player}        Name of the player to use.
+Toggle shuffle mode.
 
-MLoop {player} {mode}                                                 *:MLoop*
+- {player} Name of the player to use.
 
-    Toggle loop mode.
+                                                                       *:MLoop*
+:MLoop {player} {mode}
 
-    - {player}        Name of the player to use.
-    - {mode}          Loop mode, one of:
-        - `Track`     (Default)
-        - `None`
-        - `Playlist`
+Set the loop mode.
 
-MLoopToggle {player}                                            *:MLoopToggle*
+- {player} Name of the player to use.
+- {mode}   Loop mode, one of:
+  - `Track`     (Default)
+  - `None`
+  - `Playlist`
 
-    Toggle loop mode between `None` and `Track`.
+                                                                 *:MLoopToggle*
+:MLoopToggle {player}
 
-    - {player}        Name of the player to use.
+Toggle loop mode between `None` and `Track`.
 
-MVolumeGet {player}                                              *:MVolumeGet*
+                                                                  *:MVolumeGet*
+:MVolumeGet {player}
 
-    Display the current volume as a percentage.
+Display the current volume as a percentage.
 
-    - {player}        Name of the player to use.
+- {player} Name of the player to use.
 
-MVolmeSet {player} {volume}                                      *:MVolumeSet*
+                                                                  *:MVolumeSet*
+:MVolumeSet {player} {volume}
 
-    Set the volume to a specific value.
+Set the volume to a specific value.
 
-    - {player}        Name of the player to use.
-    - {volume}        Volume as a float between 0 and 1.
+- {player} Name of the player to use.
+- {volume} Volume as a float between 0 and 1.
 
-=============================================================================
-2. Deprecations                                    *MusicControlsDeprecations*
+===============================================================================
+DEPRECATIONS                                      *music-controls-deprecations*
 
 The following commands have been marked as deprecated and will be removed in
 future versions of the plugin. Please update your configuration to use the
 new commands.
 
-`:MusicListPlayser`          Superceded by `MPlayers`
-`:MusicPlay`                 Superceded by `MPlay`
-`:MusicPause`                Superceded by `MPause`
-`:MusicNext`                 Superceded by `MNext`
-`:MusicPrev`                 Superceded by `MPrev`
-`:MusicCurrent`              Superceded by `MCurrent`
-`:MusicShuffle`              Superceded by `MShuffle`
-`:MusicLoop`                 Superceded by `MLoop`
-`:MusicLoopToggle`           Superceded by `MLoopToggle`
-`:MusicVolumeGet`            Superceded by `MVolumeGet`
-`:MusicVolumeSet`            Superceded by `MVolumeSet`
+`:MusicListPlayers`          Superseded by `:MPlayers`
+`:MusicPlay`                 Superseded by `:MPlay`
+`:MusicPause`                Superseded by `:MPause`
+`:MusicNext`                 Superseded by `:MNext`
+`:MusicPrev`                 Superseded by `:MPrev`
+`:MusicCurrent`              Superseded by `:MCurrent`
+`:MusicShuffle`              Superseded by `:MShuffle`
+`:MusicLoop`                 Superseded by `:MLoop`
+`:MusicLoopToggle`           Superseded by `:MLoopToggle`
+`:MusicVolumeGet`            Superseded by `:MVolumeGet`
+`:MusicVolumeSet`            Superseded by `:MVolumeSet`
 
-=============================================================================
-3. Configuration                                  *MusicControlsConfiguration*
+===============================================================================
+CONFIGURATION                                    *music-controls-configuration*
 
-Music Controls doesn't really need any configuration, the only thing
-that can be configured is the default player.
+                                         *music-controls-configuration-options*
+CONFIGURATION OPTIONS
 
-A default player can be configured by calling the `setup` function and
-passing the name of the player to the `default_player` key.
+Music Controls requires minimal configuration. However, you can set a
+default player for convenience.
 
-For example, lazy.nvim users can add the following code to their
-`init.lua` file:
->
-    {
-      'AntonVanAssche/music-controls.nvim',
-      opts = {
-        default_player = 'spotify'
-      }
-    }
-<
-This will set Spotify as the default music player for Music Controls.
-You can substitute `spotify` with the name of any other music player
-you want to set as the default.
-
-With a default player set, you can use Music Controls commands without
-specifying a player each time.
-For example, `:MusicPlay` will automatically use the default player
-instead of requiring you to enter `:MusicPlay spotify`.
-
-=============================================================================
-4. Statusline Integration                  *MusicControlsStatuslineIntegration*
-
-Music Controls can be integrated with statusline plugins like
-`lualine` and `galaxyline`. Here is an example of how to integrate
-Music Controls with `lualine`:
-
-Other statusline plugins can be integrated in a similar manner.
-Refer to the plugin's documentation for more information.
-
-Note: This feature requires a `default_player` to be configured.
+Default configuration:
 
 >
-    require('lualine').setup {
-      sections = {
-        lualine_x = {
-          require("music-controls")._statusline,
-        }
-      }
-    }
+  {
+    default_player = nil, -- Set the default player (e.g., "spotify").
+  }
 <
 
-=============================================================================
+                                           *music-controls-configuration-setup*
+CONFIGURATION SETUP
+
+To configure the default player, add the following to your Neovim setup:
+
+>
+  require('music-controls').setup {
+    default_player = 'spotify',
+  }
+<
+
+This setup ensures commands like `:MPlay` automatically target the specified
+default player without requiring you to specify the player each time.
+
+                             *music-controls-configuration-recommended-keymaps*
+CONFIGURATION RECOMMENDED KEYMAPS
+
+This plugin does not include default keymaps. Below are recommended keymaps:
+
+>
+  local map = vim.api.nvim_set_keymap
+  local opts = { noremap = true, silent = true }
+  map('n', '<leader>mp', ':MPlay<CR>', opts)
+  map('n', '<leader>mn', ':MNext<CR>', opts)
+  map('n', '<leader>mp', ':MPrev<CR>', opts)
+  map('n', '<leader>mc', ':MCurrent<CR>', opts)
+  map('n', '<leader>ms', ':MShuffle<CR>', opts)
+  map('n', '<leader>ml', ':MSLoopToggle<CR>', opts)
+<
+
+===============================================================================
+STATUSLINE INTEGRATION                  *music-controls-statusline-integration*
+
+Music Controls integrates with statusline plugins such as `lualine` or
+`galaxyline`. Below is an example of integrating with `lualine`:
+
+>
+  require('lualine').setup {
+    sections = {
+      lualine_x = { require('music-controls')._statusline },
+    }
+  }
+<
+
+This integration requires a `default_player` to be configured. Refer to the
+statusline plugin's documentation for additional setup options.
+
+===============================================================================
 vim:tw=78:ts=2:sts=2:sw=2:ft=help:norl:
