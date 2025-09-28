@@ -97,25 +97,6 @@ Set the volume to a specific value.
 - {volume} Volume as a float between 0 and 1.
 
 ===============================================================================
-DEPRECATIONS                                      *music-controls-deprecations*
-
-The following commands have been marked as deprecated and will be removed in
-future versions of the plugin. Please update your configuration to use the
-new commands.
-
-`:MusicListPlayers`          Superseded by `:MPlayers`
-`:MusicPlay`                 Superseded by `:MPlay`
-`:MusicPause`                Superseded by `:MPause`
-`:MusicNext`                 Superseded by `:MNext`
-`:MusicPrev`                 Superseded by `:MPrev`
-`:MusicCurrent`              Superseded by `:MCurrent`
-`:MusicShuffle`              Superseded by `:MShuffle`
-`:MusicLoop`                 Superseded by `:MLoop`
-`:MusicLoopToggle`           Superseded by `:MLoopToggle`
-`:MusicVolumeGet`            Superseded by `:MVolumeGet`
-`:MusicVolumeSet`            Superseded by `:MVolumeSet`
-
-===============================================================================
 CONFIGURATION                                    *music-controls-configuration*
 
                                          *music-controls-configuration-options*

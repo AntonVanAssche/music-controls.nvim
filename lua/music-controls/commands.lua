@@ -7,7 +7,6 @@ local cmds = {
       require('music-controls').get_players()
     end,
     opts = {},
-    deprecated = 'MusicListPlayers',
   },
   {
     name = 'MPlay',
@@ -17,7 +16,6 @@ local cmds = {
       require('music-controls').play(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicPlay',
   },
   {
     name = 'MPause',
@@ -27,7 +25,6 @@ local cmds = {
       require('music-controls').pause(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicPause',
   },
   {
     name = 'MNext',
@@ -45,7 +42,6 @@ local cmds = {
       require('music-controls').next(player, amount)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicNext',
   },
   {
     name = 'MPrev',
@@ -63,7 +59,6 @@ local cmds = {
       require('music-controls').prev(player, amount)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicPrev',
   },
   {
     name = 'MCurrent',
@@ -73,7 +68,6 @@ local cmds = {
       require('music-controls').current(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicCurrent',
   },
   {
     name = 'MShuffle',
@@ -83,7 +77,6 @@ local cmds = {
       require('music-controls').shuffle(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicShuffle',
   },
   {
     name = 'MLoop',
@@ -101,7 +94,6 @@ local cmds = {
       require('music-controls').loop(player, mode)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicLoop',
   },
   {
     name = 'MLoopToggle',
@@ -111,7 +103,6 @@ local cmds = {
       require('music-controls').toggle_loop(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicLoopToggle',
   },
   {
     name = 'MVolumeGet',
@@ -121,7 +112,6 @@ local cmds = {
       require('music-controls').get_volume(player)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicCurrentVolume',
   },
   {
     name = 'MVolumeSet',
@@ -139,25 +129,11 @@ local cmds = {
       require('music-controls').set_volume(player, volume)
     end,
     opts = { nargs = '*' },
-    deprecated = 'MusicSetVolume',
   },
 }
 
-local _create_command = function(name, func, opts, deprecated)
+local _create_command = function(name, func, opts)
   vim.api.nvim_create_user_command(name, func, opts)
-
-  if deprecated then
-    vim.api.nvim_create_user_command(deprecated, function(args)
-      vim.api.nvim_echo({
-        {
-          "WARNING: this commands has been marked as deprecated, use '" .. name .. "' instead",
-          'WarningMsg',
-        },
-      }, true, {})
-
-      func(args)
-    end, opts)
-  end
 end
 
 -- Should only be called from plugin directory.
@@ -165,7 +141,7 @@ M.setup = function(opts)
   opts = opts or {}
 
   for _, cmd in ipairs(cmds) do
-    _create_command(cmd.name, cmd.func, cmd.opts, cmd.deprecated)
+    _create_command(cmd.name, cmd.func, cmd.opts)
   end
 end
 
