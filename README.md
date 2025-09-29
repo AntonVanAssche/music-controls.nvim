@@ -183,7 +183,7 @@ Refer to the documentation of your statusline plugin for more information.
 require('lualine').setup {
   sections = {
     lualine_x = {
-      require("music-controls")._statusline,
+      require("music-controls.ui.statusline").display,
     }
   }
 }

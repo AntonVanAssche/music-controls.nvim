@@ -97,6 +97,19 @@ Set the volume to a specific value.
 - {volume} Volume as a float between 0 and 1.
 
 ===============================================================================
+DEPRECATIONS                                      *music-controls-deprecations*
+
+The following feature has been marked as deprecated and will be removed in
+future versions of the plugin. Please update your configuration to use the
+new way:
+
+`require("music-controls")._statusline()`
+
+Superseded by
+
+`require("music-controls.ui.statusline").display
+
+===============================================================================
 CONFIGURATION                                    *music-controls-configuration*
 
                                          *music-controls-configuration-options*

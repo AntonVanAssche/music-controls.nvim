@@ -1,24 +1,18 @@
-local config = require('music-controls.config')
 local controls = require('music-controls.core.controls')
-local feedback = require('music-controls.ui.feedback')
+local config = require('music-controls.config').config
 
 local M = {}
 
-M._statusline = function()
+M.display = function()
   local state, title, artist = controls.current(config.default_player)
   local state_icons = { Playing = '♫', Paused = '⏸', Stopped = '⏹' }
 
-  feedback.warn('require("music-controls")._statusline() has been marked as deprecated.')
   return string.format(
     '%s %s - %s',
     state_icons[state and state:match('%S+') or 'Unknown'] or '?',
     title or 'No Track',
     artist or 'Unknown Artist'
   )
-end
-
-M.setup = function(opts)
-  config.setup(opts)
 end
 
 return M
